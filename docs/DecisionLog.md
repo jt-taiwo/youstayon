@@ -471,7 +471,7 @@ Launch the app.
 This startup sequence keeps initialization predictable, simplifies testing, and cleanly separates application startup from UI construction. It fits naturally into the architecture we've defined and complements the backend bootstrap process
 
 ====================================================
-To establish the shared infrastructure classes that support this Backend architecture in line 474 in docs/DecisionLogs
+# To establish the shared infrastructure classes that support this Backend architecture in line 474 in docs/DecisionLogs
 ==================================================== 
 One implementation note
 
