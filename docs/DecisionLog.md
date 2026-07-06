@@ -494,9 +494,20 @@ Before we begin implementation in Milestone 02, I recommend adding an Outbox Pat
 This pattern guarantees that events cannot be lost if an application crash occurs immediately after a successful transaction but before event dispatch. It also provides a durable audit trail of unpublished events and lays a strong foundation for future microservices or message brokers. While it adds a small amount of infrastructure, it significantly improves reliability and aligns well with the production-grade goals we've established.
 
 ====================================================
-
+# Engineering Decisions Adopted on line line 497 in DecisionLogs
 ==================================================== 
+Engineering Decisions Adopted
 
+The following operational decisions are now part of the project standard:
+
+Local database: XAMPP MySQL.
+Schema source of truth: Laravel migrations.
+Automated deployments: GitHub Actions.
+Queue management: Supervisor-managed workers.
+Scheduling: Laravel Scheduler via cron.
+Production web stack: Nginx + PHP-FPM.
+Promotion flow: Local → Staging → Production.
+Rollback preference: Redeploy previous release and use corrective forward migrations for production databases
 
 ====================================================
 
