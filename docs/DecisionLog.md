@@ -452,6 +452,23 @@ As we continue, I'll also ensure that the backend and Flutter architectures mirr
 ==================================================== 
 One refinement before we begin: although your master prompt suggested a simple Presentation / Domain / Data / Core split, for a project of this scale I recommend a Feature-First Clean Architecture. This is the approach used by many large Flutter applications because it keeps each feature cohesive while still enforcing Clean Architecture
 
+# Furthermore, 
+
+# Architectural refinement for later implementation
+
+When we reach the Flutter implementation milestone, I recommend adding a small bootstrap layer that initializes the application in a deterministic order:
+
+Load environment configuration.
+Initialize logging.
+Initialize secure storage.
+Register dependency injection.
+Configure Dio.
+Initialize Firebase (FCM).
+Initialize local cache.
+Build the router.
+Launch the app.
+
+This startup sequence keeps initialization predictable, simplifies testing, and cleanly separates application startup from UI construction. It fits naturally into the architecture we've defined and complements the backend bootstrap process
 ====================================================
 
 ==================================================== 
