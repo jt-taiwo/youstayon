@@ -441,8 +441,11 @@ Where Core contains only framework-level infrastructure, Shared contains reusabl
 This preserves your DDD Modular Monolith while keeping responsibilities clear
 
 ====================================================
+# Ensure Backend and Flutter mirror each other during development process in line 444 of docs/DecisionLog file
 ==================================================== 
+One architectural note
 
+As we continue, I'll also ensure that the backend and Flutter architectures mirror each other wherever practical. For example, if the backend has a Subscription domain, Flutter will have a corresponding subscription feature with aligned use cases and models. This symmetry reduces cognitive load, makes onboarding easier, and simplifies tracing a feature from UI to API to database. It's a pattern commonly used in larger production systems and fits well with the long-term vision for YouStayOn.
 
 ====================================================
 ==================================================== 
