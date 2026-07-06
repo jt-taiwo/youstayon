@@ -510,7 +510,7 @@ Promotion flow: Local → Staging → Production.
 Rollback preference: Redeploy previous release and use corrective forward migrations for production databases
 
 ====================================================
-# git commit -m "docs: add Milestone 01.3 Part 07 Deployment Architecture & DevOps Blueprint AND  Containerizing the backend with Docker and Docker Compose for local development only (PHP, Nginx, MySQL, and a queue worker)."
+# Containerizing the backend with Docker and Docker Compose for local development only (PHP, Nginx, MySQL, and a queue worker).
 ====================================================
 
 # Architectural recommendation
