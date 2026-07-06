@@ -469,10 +469,13 @@ Build the router.
 Launch the app.
 
 This startup sequence keeps initialization predictable, simplifies testing, and cleanly separates application startup from UI construction. It fits naturally into the architecture we've defined and complements the backend bootstrap process
+
 ====================================================
-
+To establish the shared infrastructure classes that support this Backend architecture in line 474 in docs/DecisionLogs
 ==================================================== 
+One implementation note
 
+When we reach Milestone 02 (Laravel Backend Foundation), we'll also establish the shared infrastructure classes that support this architecture (base DTOs, repository contracts, API response helpers, exception hierarchy, service abstractions, and shared traits). This ensures every subsequent domain starts from a consistent foundation rather than reinventing common infrastructure.
 
 ====================================================
 
