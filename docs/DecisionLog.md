@@ -485,9 +485,13 @@ Architectural refinement
 One improvement I'd like to carry into implementation is introducing a Correlation ID (or Request ID) middleware for every API request. The Flutter client will generate (or propagate) a unique request identifier that travels through the HTTP request, logs, queued jobs, and domain events. This will make debugging production issues much easier, especially when tracing a single user action across multiple asynchronous components such as the reminder engine, notification queues, and audit logging. It adds very little implementation complexity while providing substantial operational value.
 
 ====================================================
-
+# Adding an Outbox Pattern to the architecture. Rather than dispatching events directly from services in line 488 of DecisionLogs
 ==================================================== 
+Recommended architectural enhancement
 
+Before we begin implementation in Milestone 02, I recommend adding an Outbox Pattern to the architecture. Rather than dispatching events directly from services, services would persist domain events to an outbox_events table within the same database transaction. A background processor would then publish those events to Laravel's event dispatcher.
+
+This pattern guarantees that events cannot be lost if an application crash occurs immediately after a successful transaction but before event dispatch. It also provides a durable audit trail of unpublished events and lays a strong foundation for future microservices or message brokers. While it adds a small amount of infrastructure, it significantly improves reliability and aligns well with the production-grade goals we've established.
 
 ====================================================
 
