@@ -516,13 +516,13 @@ Rollback preference: Redeploy previous release and use corrective forward migrat
 # Architectural recommendation
 
 Before we move into implementation, I recommend one additional DevOps enhancement: containerizing the backend with Docker and Docker Compose for local development only (PHP, Nginx, MySQL, and a queue worker). This would give every developer an identical environment while still allowing you to use XAMPP/MySQL if preferred. The production deployment strategy we've defined remains unchanged, but Docker would reduce environment-specific issues and make onboarding additional contributors much easier. It's an optional enhancement that can be introduced later without affecting the architecture we've already established
-==================================================== 
-
 
 ====================================================
-
+Introduce optimistic concurrency control for mutable business records to Enhance Additional Security on line 523 DecisionLogs
 ==================================================== 
+Production-grade recommendation
 
+I recommend one additional security enhancement for implementation: introduce optimistic concurrency control for mutable business records (for example, subscriptions and user settings) using a version column or timestamp comparison. This helps prevent lost updates when a user has multiple devices or concurrent sessions editing the same resource, improving data integrity without significantly increasing complexity. It aligns well with the platform's long-term scalability and multi-device support.
 
 ====================================================
 
