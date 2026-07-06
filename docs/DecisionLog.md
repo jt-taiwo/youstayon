@@ -448,56 +448,70 @@ One architectural note
 As we continue, I'll also ensure that the backend and Flutter architectures mirror each other wherever practical. For example, if the backend has a Subscription domain, Flutter will have a corresponding subscription feature with aligned use cases and models. This symmetry reduces cognitive load, makes onboarding easier, and simplifies tracing a feature from UI to API to database. It's a pattern commonly used in larger production systems and fits well with the long-term vision for YouStayOn.
 
 ====================================================
+# Feature-First Clean Flutter Architecture in line 451 of DecisionLog docs file
+==================================================== 
+One refinement before we begin: although your master prompt suggested a simple Presentation / Domain / Data / Core split, for a project of this scale I recommend a Feature-First Clean Architecture. This is the approach used by many large Flutter applications because it keeps each feature cohesive while still enforcing Clean Architecture
+
+====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
+
 ==================================================== 
 
 
 ====================================================
-==================================================== 
 
-
-====================================================
 ==================================================== 
