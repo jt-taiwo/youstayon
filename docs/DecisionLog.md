@@ -478,9 +478,11 @@ One implementation note
 When we reach Milestone 02 (Laravel Backend Foundation), we'll also establish the shared infrastructure classes that support this architecture (base DTOs, repository contracts, API response helpers, exception hierarchy, service abstractions, and shared traits). This ensures every subsequent domain starts from a consistent foundation rather than reinventing common infrastructure.
 
 ====================================================
-
+# Introducing a Correlation ID (or Request ID) Middleware for every API request in line 481 in docs/DecisionLogs
 ==================================================== 
+Architectural refinement
 
+One improvement I'd like to carry into implementation is introducing a Correlation ID (or Request ID) middleware for every API request. The Flutter client will generate (or propagate) a unique request identifier that travels through the HTTP request, logs, queued jobs, and domain events. This will make debugging production issues much easier, especially when tracing a single user action across multiple asynchronous components such as the reminder engine, notification queues, and audit logging. It adds very little implementation complexity while providing substantial operational value.
 
 ====================================================
 
