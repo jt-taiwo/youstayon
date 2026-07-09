@@ -6,4 +6,12 @@ namespace App\Domains\Authentication\Requests;
 
 final class ForgotPasswordRequest
 {
+            public function rules(): array
+{
+    return [
+
+        'email'=>['required','email']
+
+    ];
+}
 }
