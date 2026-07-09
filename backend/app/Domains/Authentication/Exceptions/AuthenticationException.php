@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Authentication\Exceptions;
 
-final class AuthenticationException
+use App\Core\Base\Exceptions\DomainException;
+
+class AuthenticationException extends DomainException
 {
 }

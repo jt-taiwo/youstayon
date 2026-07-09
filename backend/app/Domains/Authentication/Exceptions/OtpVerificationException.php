@@ -6,7 +6,7 @@ namespace App\Domains\Authentication\Exceptions;
 
 use App\Domains\Authentication\Exceptions\AuthenticationException;
 
-class RegistrationException extends AuthenticationException
+class OtpVerificationException extends AuthenticationException
 {
 
 }

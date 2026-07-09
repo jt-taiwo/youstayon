@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Authentication\Exceptions;
 
-final class InvalidOtpException
+use App\Domains\Authentication\Exceptions\AuthenticationException;
+
+class InvalidOtpException extends AuthenticationException
 {
+
 }
