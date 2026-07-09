@@ -8,25 +8,15 @@ use Illuminate\Support\Str;
 
 trait UsesUuid
 {
-    /**
-     * UUID primary key.
-     */
-    public $incrementing = false;
-
-    /**
-     * UUID key type.
-     */
-    protected $keyType = 'string';
-
-    /**
-     * Automatically generate UUID.
-     */
     protected static function bootUsesUuid(): void
     {
         static::creating(function ($model): void {
 
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
+            if (
+                empty($model->uuid)
+                && $model->isFillable('uuid')
+            ) {
+                $model->uuid = (string) Str::uuid();
             }
 
         });

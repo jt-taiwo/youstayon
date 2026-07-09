@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Core\Base\Models\BaseModel;
 use App\Core\Traits\UsesUuid;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * User Model
- *
- * Represents an authenticated platform user.
- */
-final class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasUuids;
     use UsesUuid;
+    use MustVerifyEmail;
 
     /**
-     * @var list<string>
+     * @var array<int,string>
      */
     protected $fillable = [
         'uuid',
@@ -38,16 +35,13 @@ final class User extends Authenticatable
     ];
 
     /**
-     * @var list<string>
+     * @var array<int,string>
      */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * @return array<string,string>
-     */
     protected function casts(): array
     {
         return [
@@ -55,4 +49,35 @@ final class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Public identifier.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    /**
+     * Display name.
+     */
+    public function getFullNameAttribute(): string
+    {
+        return trim(
+            "{$this->first_name} {$this->last_name}"
+        );
+    }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Relationships
+|--------------------------------------------------------------------------
+|
+| Subscription Module
+| Purchase Module
+| Notification Module
+| Security Module
+| Wallet Module
+|
+*/
