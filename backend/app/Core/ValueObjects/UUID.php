@@ -9,21 +9,30 @@ use InvalidArgumentException;
 
 final readonly class UUID
 {
-    public function __construct(
-        public string $value,
-    ) {
-        if (! Str::isUuid($value)) {
-            throw new InvalidArgumentException(
-                'Invalid UUID supplied.'
-            );
+    public string $value;
+
+    public function __construct(string $uuid)
+    {
+        if (! Str::isUuid($uuid)) {
+            throw new InvalidArgumentException('Invalid UUID.');
         }
+
+        $this->value = $uuid;
     }
 
     public static function generate(): self
     {
-        return new self(
-            (string) Str::uuid()
-        );
+        return new self((string) Str::uuid());
+    }
+
+    public function value(): string
+    {
+        return $this->value;
+    }
+
+    public function equals(self $uuid): bool
+    {
+        return $this->value === $uuid->value;
     }
 
     public function __toString(): string
