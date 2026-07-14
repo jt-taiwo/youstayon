@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Authentication\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -10,7 +11,10 @@ Route::prefix('auth')->group(function () {
         ]);
     });
 
-    // registration
+    Route::post(
+        '/register',
+        RegisterController::class
+    );
 
     // login
 
@@ -21,6 +25,5 @@ Route::prefix('auth')->group(function () {
     // reset password
 
     // verify otp
-
 
 });

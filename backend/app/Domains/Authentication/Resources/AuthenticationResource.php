@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domains\Authentication\Resources;
 
-final class AuthenticationResource
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+final class AuthenticationResource extends JsonResource
 {
-    return [
+    /**
+     * Transform the authentication response.
+     */
+    public function toArray(Request $request): array
+    {
+        return [
 
-    'token'=>$this['token'],
+            'token' => $this['token'],
 
-    'token_type'=>'Bearer',
+            'token_type' => $this['token_type'] ?? 'Bearer',
 
-    'user'=>new UserResource($this['user'])
+            'user' => $this['user'],
 
-];
+        ];
+    }
 }

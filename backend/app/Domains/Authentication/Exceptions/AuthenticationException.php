@@ -6,6 +6,6 @@ namespace App\Domains\Authentication\Exceptions;
 
 use App\Core\Base\Exceptions\DomainException;
 
-class AuthenticationException extends DomainException
+final class AuthenticationException extends DomainException
 {
 }
