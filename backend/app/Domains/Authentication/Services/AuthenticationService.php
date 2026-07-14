@@ -7,6 +7,7 @@ namespace App\Domains\Authentication\Services;
 use App\Core\Base\Services\AbstractService;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\DTOs\RegisterUserDTO;
+use App\Domains\Authentication\DTOs\LoginUserDTO;
 use App\Domains\Authentication\Exceptions\AuthenticationException;
 use App\Domains\User\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -52,9 +53,15 @@ final class AuthenticationService extends AbstractService
             );
         }
 
-        $this->repository->updateLastLogin($user);
+        // $this->repository->updateLastLogin($user);
 
         return $user;
+    }
+
+    //logout
+    public function logout(User $user): void
+    {
+        $user->currentAccessToken()?->delete();
     }
 
 }

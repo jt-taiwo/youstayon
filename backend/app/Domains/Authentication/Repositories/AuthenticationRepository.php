@@ -41,4 +41,11 @@ final class AuthenticationRepository extends AbstractRepository implements Authe
     {
         return (bool) $user->delete();
     }
+
+    // public function updateLastLogin(User $user): bool
+    // {
+    //     return $user->update([
+    //         'last_login_at' => now(),
+    //     ]);
+    // }
 }

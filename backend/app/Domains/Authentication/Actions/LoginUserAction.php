@@ -8,10 +8,10 @@ use App\Domains\Authentication\DTOs\LoginUserDTO;
 use App\Domains\Authentication\Services\AuthenticationService;
 use App\Domains\User\Models\User;
 
-final class LoginUserAction
+final readonly class LoginUserAction
 {
     public function __construct(
-        private readonly AuthenticationService $service,
+        private AuthenticationService $service,
     ) {
     }
 
