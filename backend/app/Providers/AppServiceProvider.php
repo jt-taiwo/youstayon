@@ -18,7 +18,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AuthenticationRepositoryInterface::class,
             AuthenticationRepository::class
+        ); 
+
+        $this->app->bind(
+            \App\Domains\User\Contracts\UserRepositoryInterface::class,
+            \App\Domains\User\Repositories\UserRepository::class
         );
+
+
     }
 
     /**

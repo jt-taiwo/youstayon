@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Authentication\Requests;
+namespace App\Domains\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-final class ResetPasswordRequest extends FormRequest
+final class ChangePasswordRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -18,20 +18,18 @@ final class ResetPasswordRequest extends FormRequest
     {
         return [
 
-            'token' => [
+            'current_password' => [
                 'required',
                 'string',
-            ],
-
-            'email' => [
-                'required',
-                'email',
             ],
 
             'password' => [
                 'required',
                 'confirmed',
-                Password::defaults(),
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
             ],
 
         ];

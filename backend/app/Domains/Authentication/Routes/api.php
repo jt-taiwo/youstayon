@@ -4,6 +4,8 @@ use App\Domains\Authentication\Controllers\CurrentUserController;
 use App\Domains\Authentication\Controllers\LoginController;
 use App\Domains\Authentication\Controllers\LogoutController;
 use App\Domains\Authentication\Controllers\RegisterController;
+use App\Domains\Authentication\Controllers\ForgotPasswordController;
+use App\Domains\Authentication\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -24,6 +26,16 @@ Route::prefix('auth')->group(function () {
         '/login',
         LoginController::class
     );
+    // forgot password
+        Route::post(
+        '/forgot-password',
+        ForgotPasswordController::class
+        );
+    // reset password
+        Route::post(
+            '/reset-password',
+            ResetPasswordController::class
+        );
 
         Route::middleware('auth:sanctum')->group(function () {
             // logout
@@ -32,9 +44,6 @@ Route::prefix('auth')->group(function () {
             Route::get('/me', CurrentUserController::class);
     });
 
-    // forgot password
-
-    // reset password
 
     // verify otp
 

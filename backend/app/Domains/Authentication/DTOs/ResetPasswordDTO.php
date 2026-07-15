@@ -11,6 +11,7 @@ final readonly class ResetPasswordDTO extends AbstractDTO
     public function __construct(
         public string $token,
         public string $email,
-        public string $password
-    ) {}
+        public string $password,
+    ) {
+    }
 }

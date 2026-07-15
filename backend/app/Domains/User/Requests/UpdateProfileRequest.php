@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Authentication\Requests;
+namespace App\Domains\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-final class ResetPasswordRequest extends FormRequest
+final class UpdateProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -18,20 +17,22 @@ final class ResetPasswordRequest extends FormRequest
     {
         return [
 
-            'token' => [
+            'first_name' => [
                 'required',
                 'string',
+                'max:255',
             ],
 
-            'email' => [
+            'last_name' => [
                 'required',
-                'email',
+                'string',
+                'max:255',
             ],
 
-            'password' => [
+            'phone' => [
                 'required',
-                'confirmed',
-                Password::defaults(),
+                'string',
+                'max:20',
             ],
 
         ];

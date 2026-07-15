@@ -12,6 +12,12 @@ use App\Domains\Authentication\Exceptions\AuthenticationException;
 use App\Domains\User\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use App\Domains\Authentication\DTOs\ForgotPasswordDTO;
+use App\Domains\Authentication\DTOs\ResetPasswordDTO;
+
 final class AuthenticationService extends AbstractService
 {
     public function __construct(
@@ -62,6 +68,57 @@ final class AuthenticationService extends AbstractService
     public function logout(User $user): void
     {
         $user->currentAccessToken()?->delete();
+    }
+
+    // forgotPassword
+    public function forgotPassword(ForgotPasswordDTO $dto): void
+    {
+        $user = User::where('email', $dto->email)->first();
+
+        if (! $user) {
+            return;
+        }
+
+        Password::broker()->createToken($user);
+
+        // Email sending will be implemented later.
+    }
+
+    // resetPassword
+    public function resetPassword(ResetPasswordDTO $dto): void
+    {
+        $status = Password::reset(
+
+                [
+                    'email' => $dto->email,
+                    'password' => $dto->password,
+                    'password_confirmation' => $dto->password,
+                    'token' => $dto->token,
+                ],
+
+                function ($user) use ($dto) {
+
+                    $user->forceFill([
+
+                        'password' => Hash::make($dto->password),
+
+                        'remember_token' => Str::random(60),
+
+                    ])->save();
+
+                    event(new PasswordReset($user));
+
+                }
+
+            );
+
+            if ($status !== Password::PASSWORD_RESET) {
+
+                throw new \App\Domains\Authentication\Exceptions\AuthenticationException(
+                    __($status)
+                );
+
+            }
     }
 
 }

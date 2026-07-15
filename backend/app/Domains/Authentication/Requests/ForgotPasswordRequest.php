@@ -4,14 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domains\Authentication\Requests;
 
-final class ForgotPasswordRequest
-{
-            public function rules(): array
-{
-    return [
+use Illuminate\Foundation\Http\FormRequest;
 
-        'email'=>['required','email']
+final class ForgotPasswordRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
 
-    ];
-}
+    public function rules(): array
+    {
+        return [
+
+            'email' => [
+                'required',
+                'email',
+            ],
+
+        ];
+    }
 }
