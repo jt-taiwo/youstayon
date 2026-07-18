@@ -1,26 +1,21 @@
 <?php
 
-use App\Domains\User\Controllers\ProfileController;
-use App\Domains\User\Controllers\ChangePasswordController;
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
+use App\Domains\User\Controllers\UpdateAvatarController;
+use App\Domains\User\Controllers\RemoveAvatarController;
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function (): void {
 
-    Route::get(
-        '/profile',
-        [ProfileController::class, 'show']
+    Route::post(
+        '/profile/avatar',
+        UpdateAvatarController::class
     );
 
-    Route::patch(
-        '/profile',
-        [ProfileController::class, 'update']
+    Route::delete(
+        '/profile/avatar',
+        RemoveAvatarController::class
     );
-
-    Route::patch(
-    '/profile/change-password',
-    ChangePasswordController::class
-);
-
-
 
 });

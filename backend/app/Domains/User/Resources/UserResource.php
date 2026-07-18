@@ -25,6 +25,12 @@ final class UserResource extends JsonResource
 
             'phone' => $this->phone,
 
+            'avatar' => $this->avatar,
+
+            'avatar_url' => $this->avatar
+                ? asset('storage/' . $this->avatar)
+                : null,
+
             'status' => $this->status,
 
             'email_verified_at' => $this->email_verified_at,
