@@ -9,4 +9,6 @@ use App\Domains\User\Models\User;
 interface UserRepositoryInterface
 {
     public function update(User $user, array $attributes): bool;
+
+    public function delete(User $user): bool;
 }

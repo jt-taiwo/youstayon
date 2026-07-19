@@ -13,4 +13,9 @@ final class UserRepository implements UserRepositoryInterface
     {
         return $user->update($attributes);
     }
+
+    public function delete(User $user): bool
+    {
+        return (bool) $user->delete();
+    }
 }
