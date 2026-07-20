@@ -36,4 +36,15 @@ final class SubscriptionRepository implements SubscriptionRepositoryInterface
             ->latest()
             ->get();
     }
+
+    public function findByUuidForUser(
+        User $user,
+        string $uuid
+    ): ?Subscription {
+        return Subscription::query()
+            ->with('category')
+            ->where('user_id', $user->id)
+            ->where('uuid', $uuid)
+            ->first();
+    }
 }

@@ -20,4 +20,9 @@ interface SubscriptionRepositoryInterface
     public function getByUser(
         User $user
     ): Collection;
+
+    public function findByUuidForUser(
+        User $user,
+        string $uuid
+    ): ?Subscription;
 }
