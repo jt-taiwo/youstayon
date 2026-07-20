@@ -482,18 +482,16 @@ PHASE 0 — Architecture
 PHASE 1 — Backend Foundation
 ████████████████████  Complete
 
-PHASE 2 — User Domain 
-    ↓
-████████████████████  Complete
-    ├── 03.1 Profile Management       ✅
-    ├── 03.2 Password Management      ✅
-    ├── 03.3 Avatar Management        ✅
-    ├── 03.4 Account Deletion         ✅
-    └── 03.5 Email Verification       ✅
-    ↓
+PHASE 2 — User Domain
+██████████████████░░  90%
+
+  Profile                 ✅
+  Password                ✅
+  Avatar                  ✅
+  Account Deletion        ⏳ NEXT
+
 PHASE 3 — Utility Engine
-░░░░░░░░░░░░░░░░░░░░  ⏳ NEXT
-    └── 04.1 Subscription Domain       
+░░░░░░░░░░░░░░░░░░░░  Not started
 
 PHASE 4 — Radar Intelligence
 ░░░░░░░░░░░░░░░░░░░░  Not started
