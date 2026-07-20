@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Domains\Subscription\Models\Subscription;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -69,4 +71,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return UserFactory::new();
     }
+
+    // Relationship
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(
+            Subscription::class
+        );
+    }
+
+    
 }
