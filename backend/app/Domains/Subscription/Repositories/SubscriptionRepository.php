@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Subscription\Repositories;
 
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
+use App\Domains\Subscription\Enums\SubscriptionStatus;
 use App\Domains\Subscription\Models\Subscription;
 use App\Domains\Subscription\Models\SubscriptionCategory;
 use App\Domains\User\Models\User;
@@ -60,5 +61,20 @@ final class SubscriptionRepository implements SubscriptionRepositoryInterface
         $subscription->save();
 
         return $subscription->refresh();
+    }
+
+    public function findActiveSubscriptionsDueForExpiry(): Collection
+    {
+        return Subscription::query()
+            ->where(
+                'status',
+                SubscriptionStatus::ACTIVE
+            )
+            ->where(
+                'expires_at',
+                '<=',
+                now()
+            )
+            ->get();
     }
 }

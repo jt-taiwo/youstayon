@@ -30,5 +30,8 @@ interface SubscriptionRepositoryInterface
         Subscription $subscription
     ): Subscription;
 
-    
+    /**
+     * Retrieve active subscriptions whose expiry time has passed.
+     */
+    public function findActiveSubscriptionsDueForExpiry(): Collection;
 }
