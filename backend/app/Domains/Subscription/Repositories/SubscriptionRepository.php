@@ -38,13 +38,27 @@ final class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     public function findByUuidForUser(
-        User $user,
-        string $uuid
+        string $uuid,
+        User $user
     ): ?Subscription {
         return Subscription::query()
             ->with('category')
-            ->where('user_id', $user->id)
-            ->where('uuid', $uuid)
+            ->where(
+                'uuid',
+                $uuid
+            )
+            ->where(
+                'user_id',
+                $user->id
+            )
             ->first();
+    }
+
+    public function save(
+        Subscription $subscription
+    ): Subscription {
+        $subscription->save();
+
+        return $subscription->refresh();
     }
 }

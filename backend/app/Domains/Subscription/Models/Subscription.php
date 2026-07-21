@@ -4,13 +4,25 @@ declare(strict_types=1);
 
 namespace App\Domains\Subscription\Models;
 
+use App\Domains\Subscription\Enums\SubscriptionStatus;
+use App\Domains\Subscription\Exceptions\SubscriptionCannotBeCancelledException;
 use App\Domains\User\Models\User;
+use Database\Factories\SubscriptionFactory;
+use DomainException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 final class Subscription extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory(): SubscriptionFactory
+    {
+        return SubscriptionFactory::new();
+    }
+
     protected $fillable = [
         'uuid',
         'user_id',
@@ -33,6 +45,7 @@ final class Subscription extends Model
             'started_at' => 'datetime',
             'expires_at' => 'datetime',
             'renewal_at' => 'datetime',
+            'status' => SubscriptionStatus::class,
         ];
     }
 
@@ -43,6 +56,20 @@ final class Subscription extends Model
         });
     }
 
+    //Subscription cCncellation method
+    // cancellation does not mean reversing a completed recharge. 
+    // It means cancelling an active subscription record that is still eligible 
+    // for cancellation.
+    public function cancel(): void
+    {
+        if (! $this->status->canBeCancelled()) {
+            throw new SubscriptionCannotBeCancelledException();
+        }
+
+        $this->status = SubscriptionStatus::CANCELLED;
+    }
+
+    // Relationships
     public function user(): BelongsTo
     {
         return $this->belongsTo(

@@ -22,7 +22,13 @@ interface SubscriptionRepositoryInterface
     ): Collection;
 
     public function findByUuidForUser(
-        User $user,
-        string $uuid
+        string $uuid,
+        User $user
     ): ?Subscription;
+
+    public function save(
+        Subscription $subscription
+    ): Subscription;
+
+    
 }

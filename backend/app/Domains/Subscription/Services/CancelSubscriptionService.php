@@ -9,7 +9,7 @@ use App\Domains\Subscription\Exceptions\SubscriptionNotFoundException;
 use App\Domains\Subscription\Models\Subscription;
 use App\Domains\User\Models\User;
 
-final class GetSubscriptionService
+final class CancelSubscriptionService
 {
     public function __construct(
         private readonly SubscriptionRepositoryInterface $repository
@@ -20,15 +20,17 @@ final class GetSubscriptionService
         User $user,
         string $uuid
     ): Subscription {
-        $subscription = $this->repository->findByUuidForUser(
-            $uuid,
-            $user
-        );
+        $subscription = $this->repository
+            ->findByUuidForUser($uuid, $user);
 
         if ($subscription === null) {
             throw new SubscriptionNotFoundException();
         }
 
-        return $subscription;
+        $subscription->cancel();
+
+        return $this->repository->save(
+            $subscription
+        );
     }
 }

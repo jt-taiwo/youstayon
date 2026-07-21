@@ -1,6 +1,8 @@
 <?php
 
 use App\Domains\Authentication\Exceptions\AuthenticationException;
+use App\Domains\Subscription\Exceptions\SubscriptionCannotBeCancelledException;
+use App\Domains\Subscription\Exceptions\SubscriptionNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,27 +21,33 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
 
-    ->withExceptions(function (Exceptions $exceptions): void {
+->withExceptions(function (Exceptions $exceptions): void {
+    $exceptions->render(function (
+        SubscriptionNotFoundException $exception
+    ): JsonResponse {
+        return response()->json([
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ], 404);
+    });
 
-        $exceptions->render(
+    $exceptions->render(function (
+        AuthenticationException $exception
+    ): JsonResponse {
+        return response()->json([
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ], 401);
+    });
 
-            function (
-                AuthenticationException $e,
-                Request $request
-            ): JsonResponse {
-
-                return response()->json([
-                    'success' => false,
-                    'message' => $e->getMessage(),
-                    'data'    => null,
-                    'errors'  => null,
-                    'meta'    => [],
-                ], 401);
-
-            }
-
-        );
-
-    })
+    $exceptions->render(function (
+        SubscriptionCannotBeCancelledException $exception
+    ): JsonResponse {
+        return response()->json([
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ], 422);
+    });
+})
 
     ->create();

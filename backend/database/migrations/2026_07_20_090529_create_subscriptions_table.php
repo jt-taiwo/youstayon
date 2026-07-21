@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domains\Subscription\Enums\SubscriptionStatus;
 
 return new class extends Migration
 {
@@ -45,7 +46,7 @@ return new class extends Migration
                 ->nullable();
 
             $table->string('status')
-                ->default('active');
+                ->default(SubscriptionStatus::ACTIVE->value);
 
             $table->text('notes')
                 ->nullable();
