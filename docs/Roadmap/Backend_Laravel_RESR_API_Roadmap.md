@@ -494,6 +494,32 @@ PHASE 2 — User Domain
 PHASE 3 — Utility Engine
 ░░░░░░░░░░░░░░░░░░░░  ⏳ NEXT
     └── 04.1 Subscription Domain       
+            Current subscription capability status
+
+            Completed:
+            Subscription Categories ✅
+            Create Subscription ✅
+            List Subscriptions ✅
+            Get Subscription ✅
+            Cancel Subscription ✅
+            Subscription Expiry Processing ✅
+            subscriptions:process-expiry ✅
+            scheduled every minute ✅ (permanent schedule:work execution deferred to 
+            the infrastructure /deployment phase)
+            Renew Subscription ✅
+            ACTIVE → can renew ✅
+            EXPIRED → can renew ✅
+            EXHAUSTED → can renew ✅
+            CANCELLED → cannot renew ✅
+            renewal creates a new subscription record ✅
+            original subscription remains unchanged as historical history ✅
+
+            Current test baseline:
+
+            88 passed
+            242 assertions
+            Next Logical capability: Subscription Usage / Exhaustion Processing
+            <!-- This is the missing counterpart to expiry: -->
 
 PHASE 4 — Radar Intelligence
 ░░░░░░░░░░░░░░░░░░░░  Not started

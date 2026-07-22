@@ -8,6 +8,7 @@ use App\Domains\Subscription\Controllers\GetSubscriptionController;
 use App\Domains\Subscription\Controllers\ListSubscriptionCategoriesController;
 use App\Domains\Subscription\Controllers\ListSubscriptionsController;
 use App\Domains\Subscription\Controllers\CancelSubscriptionController;
+use App\Domains\Subscription\Controllers\RenewSubscriptionController;
 
 Route::middleware('auth:sanctum')->group(function (): void {
 
@@ -46,6 +47,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post(
         '/subscriptions/{uuid}/cancel',
         CancelSubscriptionController::class
+    );
+
+    Route::post(
+        '/subscriptions/{uuid}/renew',
+        RenewSubscriptionController::class
     );
     
 });

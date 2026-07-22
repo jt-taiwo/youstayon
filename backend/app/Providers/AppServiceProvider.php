@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
+use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
-use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
+use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
+use App\Domains\Subscription\Services\RenewSubscriptionService;
+use Illuminate\Support\ServiceProvider;
 
-
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AuthenticationRepositoryInterface::class,
             AuthenticationRepository::class
-        ); 
+        );
 
         $this->app->bind(
             \App\Domains\User\Contracts\UserRepositoryInterface::class,
@@ -40,7 +41,10 @@ class AppServiceProvider extends ServiceProvider
             SubscriptionRepository::class
         );
 
-
+        $this->app->bind(
+            RenewSubscriptionServiceInterface::class,
+            RenewSubscriptionService::class
+        );
     }
 
     /**

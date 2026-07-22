@@ -3,6 +3,7 @@
 use App\Domains\Authentication\Exceptions\AuthenticationException;
 use App\Domains\Subscription\Exceptions\SubscriptionCannotBeCancelledException;
 use App\Domains\Subscription\Exceptions\SubscriptionNotFoundException;
+use App\Domains\Subscription\Exceptions\SubscriptionCannotBeRenewedException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -48,6 +49,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'message' => $exception->getMessage(),
         ], 422);
     });
+    //
+    $exceptions->render(function (
+        SubscriptionCannotBeRenewedException $exception
+    ): JsonResponse {
+        return response()->json([
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ], 422);
+    });
+
 })
 
     ->create();
