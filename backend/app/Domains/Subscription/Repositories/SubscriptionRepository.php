@@ -77,4 +77,20 @@ final class SubscriptionRepository implements SubscriptionRepositoryInterface
             )
             ->get();
     }
+
+    /**
+ * Retrieve active subscriptions that have a usage limit.
+ */
+public function findActiveSubscriptionsWithUsageLimits(): Collection
+{
+    return Subscription::query()
+        ->where(
+            'status',
+            SubscriptionStatus::ACTIVE
+        )
+        ->whereNotNull(
+            'usage_limit'
+        )
+        ->get();
+    }   
 }

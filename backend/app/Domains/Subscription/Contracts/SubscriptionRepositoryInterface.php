@@ -34,4 +34,9 @@ interface SubscriptionRepositoryInterface
      * Retrieve active subscriptions whose expiry time has passed.
      */
     public function findActiveSubscriptionsDueForExpiry(): Collection;
+
+    /**
+     * Retrieve active subscriptions that have a usage limit.
+     */
+    public function findActiveSubscriptionsWithUsageLimits(): Collection;
 }
