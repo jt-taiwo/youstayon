@@ -11,7 +11,11 @@ use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
+use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
+use App\Domains\Subscription\Contracts\RecordSubscriptionUsageServiceInterface;
+use App\Domains\Subscription\Repositories\SubscriptionUsageRepository;
 use App\Domains\Subscription\Services\RenewSubscriptionService;
+use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -44,6 +48,16 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RenewSubscriptionServiceInterface::class,
             RenewSubscriptionService::class
+        );
+
+        $this->app->bind(
+            SubscriptionUsageRepositoryInterface::class,
+            SubscriptionUsageRepository::class
+        );
+
+        $this->app->bind(
+            RecordSubscriptionUsageServiceInterface::class,
+            RecordSubscriptionUsageService::class
         );
     }
 

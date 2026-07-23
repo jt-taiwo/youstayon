@@ -27,6 +27,8 @@ final class CreateSubscriptionController extends Controller
             providerName: $request->validated('provider_name'),
             planName: $request->validated('plan_name'),
             amount: $request->validated('amount'),
+            usageLimit: $request->validated('usage_limit'),
+            usageUnit: $request->validated('usage_unit'),
             currency: $request->validated('currency', 'NGN'),
             startedAt: $request->validated('started_at'),
             expiresAt: $request->validated('expires_at'),

@@ -39,6 +39,20 @@ final class CreateSubscriptionRequest extends FormRequest
                 'min:0',
             ],
 
+            'usage_limit' => [
+                'nullable',
+                'numeric',
+                'gt:0',
+                'required_with:usage_unit',
+            ],
+
+            'usage_unit' => [
+                'nullable',
+                'string',
+                'max:20',
+                'required_with:usage_limit',
+            ],
+
             'currency' => [
                 'sometimes',
                 'string',

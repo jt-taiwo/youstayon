@@ -8,10 +8,10 @@ use App\Domains\Subscription\Enums\SubscriptionStatus;
 use App\Domains\Subscription\Exceptions\SubscriptionCannotBeCancelledException;
 use App\Domains\User\Models\User;
 use Database\Factories\SubscriptionFactory;
-use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 final class Subscription extends Model
@@ -30,6 +30,8 @@ final class Subscription extends Model
         'provider_name',
         'plan_name',
         'amount',
+        'usage_limit',
+        'usage_unit',
         'currency',
         'started_at',
         'expires_at',
@@ -42,6 +44,7 @@ final class Subscription extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'usage_limit' => 'decimal:4',
             'started_at' => 'datetime',
             'expires_at' => 'datetime',
             'renewal_at' => 'datetime',
@@ -56,10 +59,9 @@ final class Subscription extends Model
         });
     }
 
-    //Subscription cCncellation method
-    // cancellation does not mean reversing a completed recharge. 
-    // It means cancelling an active subscription record that is still eligible 
-    // for cancellation.
+    /**
+     * Cancel the subscription when its current status permits cancellation.
+     */
     public function cancel(): void
     {
         if (! $this->status->canBeCancelled()) {
@@ -69,7 +71,28 @@ final class Subscription extends Model
         $this->status = SubscriptionStatus::CANCELLED;
     }
 
+    /**
+     * Determine whether the subscription can transition to exhausted.
+     */
+    public function canBeExhausted(): bool
+    {
+        return $this->status === SubscriptionStatus::ACTIVE;
+    }
+
+    /**
+     * Mark the subscription as exhausted.
+     */
+    public function markAsExhausted(): void
+    {
+        if (! $this->canBeExhausted()) {
+            return;
+        }
+
+        $this->status = SubscriptionStatus::EXHAUSTED;
+    }
+
     // Relationships
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(
@@ -82,6 +105,13 @@ final class Subscription extends Model
         return $this->belongsTo(
             SubscriptionCategory::class,
             'subscription_category_id'
+        );
+    }
+
+    public function usageRecords(): HasMany
+    {
+        return $this->hasMany(
+            SubscriptionUsageRecord::class
         );
     }
 }
