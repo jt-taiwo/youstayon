@@ -99,6 +99,415 @@ This is the next capability I recommend implementing.
 
 Based on the project direction and the architecture already established, I would organize the remaining work as follows.
 
+Excellent. This is exactly where I wanted the project to be before moving deeper into the Subscription domain.
+
+Your backend is now in a very healthy state:
+
+* ✅ Authentication
+* ✅ User Management
+* ✅ Avatar Management
+* ✅ Email Verification
+* ✅ Password Reset
+* ✅ Profile
+* ✅ Subscription CRUD
+* ✅ Cancellation
+* ✅ Renewal
+* ✅ Expiry Processing
+* ✅ Usage Recording
+* ✅ Usage Listing
+* ✅ Usage Summary
+* ✅ Usage Limits
+* ✅ 116 tests
+* ✅ 317 assertions
+* ✅ Everything committed and pushed
+
+This is now a production-quality foundation.
+
+---
+
+# Next Capability
+
+## Milestone: Subscription Renewal History (Audit Trail)
+
+**Objective**
+
+Every renewal must leave a permanent audit record.
+
+Today:
+
+```
+Subscription A
+```
+
+Renew
+
+↓
+
+```
+Subscription B
+```
+
+The original subscription stays unchanged.
+
+But we also need
+
+```
+Renewal History
+
+Old Subscription
+↓
+
+New Subscription
+
+When
+
+Who
+
+Reason
+
+Metadata
+```
+
+This is extremely important because later it supports
+
+* analytics
+* customer support
+* billing investigations
+* fraud detection
+* reports
+* AI insights
+
+without changing architecture later.
+
+---
+
+# What we'll build
+
+## 1. RenewalHistory model
+
+```
+SubscriptionRenewalHistory
+```
+
+Table
+
+```
+subscription_renewal_histories
+```
+
+---
+
+## 2. Migration
+
+Fields
+
+```
+id
+
+uuid
+
+old_subscription_id
+
+new_subscription_id
+
+renewed_by_user_id
+
+renewed_at
+
+created_at
+
+updated_at
+```
+
+Later we can extend with
+
+```
+renewal_reason
+
+source
+
+metadata
+
+device
+
+ip_address
+
+```
+
+without redesign.
+
+---
+
+## 3. Model
+
+```
+SubscriptionRenewalHistory
+```
+
+relationships
+
+```
+oldSubscription()
+
+newSubscription()
+
+renewedBy()
+```
+
+---
+
+## 4. Repository
+
+```
+SubscriptionRenewalHistoryRepository
+```
+
+Interface
+
+```
+create()
+
+listForSubscription()
+
+```
+
+---
+
+## 5. DTO
+
+```
+CreateRenewalHistoryDTO
+```
+
+---
+
+## 6. Service
+
+```
+CreateRenewalHistoryService
+```
+
+---
+
+## 7. Update RenewSubscriptionService
+
+Current flow
+
+```
+renew
+
+↓
+
+create new subscription
+
+↓
+
+return
+```
+
+New flow
+
+```
+renew
+
+↓
+
+create new subscription
+
+↓
+
+create renewal history
+
+↓
+
+return
+```
+
+---
+
+## 8. API Endpoint
+
+```
+GET
+
+/api/subscriptions/{uuid}/renewals
+```
+
+Returns
+
+```
+[
+   {
+      old_subscription
+
+      new_subscription
+
+      renewed_at
+   }
+]
+```
+
+---
+
+## 9. Resource
+
+```
+SubscriptionRenewalHistoryResource
+```
+
+---
+
+## 10. Tests
+
+Feature
+
+```
+RenewalHistoryTest
+```
+
+Cases
+
+✓ authenticated user can list renewal history
+
+✓ guest cannot
+
+✓ another user cannot
+
+✓ empty history returns []
+
+✓ newest first
+
+---
+
+Unit
+
+```
+CreateRenewalHistoryServiceTest
+```
+
+Cases
+
+✓ history is created
+
+✓ correct relationships
+
+✓ timestamps saved
+
+✓ repository invoked once
+
+---
+
+# Estimated files
+
+Approximately:
+
+* 1 migration
+* 1 model
+* 1 factory
+* 1 repository interface
+* 1 repository
+* 1 DTO
+* 1 service interface
+* 1 service
+* 1 controller
+* 1 resource
+* 1 route
+* update RenewSubscriptionService
+* 2 test files
+
+≈ **14–16 files**
+
+This is very manageable and fits cleanly into the existing architecture.
+
+---
+
+# Updated Roadmap After Renewal History
+
+Once Renewal History is complete, the remaining major Subscription-domain work will be:
+
+### Phase A — Subscription Core (nearly complete)
+
+* ✅ Subscription CRUD
+* ✅ Renewal
+* ⏳ Renewal History (next)
+* ⏳ Renewal Analytics
+
+### Phase B — Subscription Intelligence
+
+* Upcoming Expiry Engine
+* Upcoming Exhaustion Engine
+* Reminder Scheduling
+* Notification Preferences
+* Reminder Delivery
+* Multi-channel notifications (Email, Push, SMS)
+
+### Phase C — Usage Intelligence
+
+* Unit conversion (MB ↔ GB, minutes, kWh, etc.)
+* Daily usage aggregation
+* Weekly usage aggregation
+* Monthly usage aggregation
+* Remaining balance calculations
+* Consumption rate calculations
+* Predicted exhaustion date
+* Usage trends
+
+### Phase D — Dashboard & Reporting
+
+* Dashboard summary endpoint
+* Active vs expired counts
+* Upcoming expiries
+* Usage statistics
+* Monthly subscription costs
+* Category spending
+* Charts and analytics endpoints
+
+### Phase E — Search & Filtering
+
+* Search subscriptions
+* Filter by category
+* Filter by status
+* Filter by expiry range
+* Sort and pagination
+* Advanced query support
+
+### Phase F — Scheduler & Automation
+
+* Scheduled expiry processor
+* Scheduled exhaustion processor
+* Scheduled reminder processor
+* Queue integration
+* Background jobs
+* Retry handling
+* Idempotency safeguards
+
+### Phase G — AI & Intelligence (YouStayOn differentiator)
+
+* Data expiry prediction
+* Personalized reminder timing
+* Spending insights
+* Subscription recommendations
+* Duplicate subscription detection
+* Usage anomaly detection
+
+### Phase H — Future Financial Modules
+
+* Wallet
+* Savings
+* Loans
+* Insurance
+* Investments
+* Rewards
+* Referrals
+* AI Assistant
+* Open APIs
+
+---
+
+This ordering keeps the architecture incremental: every new capability builds on stable, tested components rather than requiring refactoring later.
+
+The next implementation is therefore **Subscription Renewal History**, and we'll build it to the same production standard you've maintained throughout the project.
+
 ## Phase 1 — Subscription Intelligence Core
 
 ### Completed
