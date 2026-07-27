@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Subscription\Models;
 
+use Database\Factories\SubscriptionUsageRecordFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class SubscriptionUsageRecord extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): SubscriptionUsageRecordFactory
+    {
+        return SubscriptionUsageRecordFactory::new();
+    }
 
     protected $fillable = [
         'subscription_id',

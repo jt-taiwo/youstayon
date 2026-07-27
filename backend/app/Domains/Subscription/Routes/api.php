@@ -5,8 +5,10 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Domains\Subscription\Controllers\CreateSubscriptionController;
 use App\Domains\Subscription\Controllers\GetSubscriptionController;
+use App\Domains\Subscription\Controllers\GetSubscriptionUsageSummaryController;
 use App\Domains\Subscription\Controllers\ListSubscriptionCategoriesController;
 use App\Domains\Subscription\Controllers\ListSubscriptionsController;
+use App\Domains\Subscription\Controllers\ListSubscriptionUsageController;
 use App\Domains\Subscription\Controllers\CancelSubscriptionController;
 use App\Domains\Subscription\Controllers\RecordSubscriptionUsageController;
 use App\Domains\Subscription\Controllers\RenewSubscriptionController;
@@ -38,6 +40,16 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get(
         '/subscriptions/{uuid}',
         GetSubscriptionController::class
+    );
+
+    Route::get(
+        '/subscriptions/{uuid}/usage/summary',
+        GetSubscriptionUsageSummaryController::class
+    );
+    
+    Route::get(
+        '/subscriptions/{uuid}/usage',
+        ListSubscriptionUsageController::class
     );
 
     Route::post(

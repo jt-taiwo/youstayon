@@ -34,10 +34,15 @@ final class SubscriptionUsageRepository
     public function getTotalUsage(
         Subscription $subscription
     ): string {
-        return (string) (
-            $subscription
-                ->usageRecords()
-                ->sum('quantity')
+        $total = $subscription
+            ->usageRecords()
+            ->sum('quantity');
+
+        return number_format(
+            (float) $total,
+            4,
+            '.',
+            ''
         );
     }
 }

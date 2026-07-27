@@ -9,6 +9,8 @@ use App\Domains\Authentication\Repositories\AuthenticationRepository;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
+use App\Domains\Subscription\Contracts\ListSubscriptionUsageServiceInterface;
+use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
 use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
@@ -58,6 +60,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RecordSubscriptionUsageServiceInterface::class,
             RecordSubscriptionUsageService::class
+        );
+  
+        $this->app->bind(
+            ListSubscriptionUsageServiceInterface::class,
+            ListSubscriptionUsageService::class
         );
     }
 
