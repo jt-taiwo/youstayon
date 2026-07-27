@@ -103,19 +103,19 @@ Based on the project direction and the architecture already established, I would
 
 ### Completed
 
-* [x] Subscription categories
-* [x] Create subscription
-* [x] List subscriptions
-* [x] View subscription
-* [x] Cancel subscription
-* [x] Subscription expiry processing
-* [x] Renewal
-* [x] Subscription usage recording
-* [x] Usage history
-* [x] Usage summary
-* [x] Usage limit enforcement
-* [x] Exhaustion detection and processing
-* [x] Renewal preserves original subscription
+* ✅ Subscription categories
+* ✅ Create subscription
+* ✅ List subscriptions
+* ✅ View subscription
+* ✅ Cancel subscription
+* ✅ Subscription expiry processing
+* ✅ Renewal
+* ✅ Subscription usage recording
+* ✅ Usage history
+* ✅ Usage summary
+* ✅ Usage limit enforcement
+* ✅ Exhaustion detection and processing
+* ✅ Renewal preserves original subscription
 
 ### Next
 
@@ -153,6 +153,7 @@ The system should transform raw subscription data into intelligence.
   * Monitor
   * Warning
   * Critical
+  
 * [ ] Radar intelligence summary
 * [ ] Dashboard intelligence cards
 * [ ] Radar feed
@@ -307,11 +308,11 @@ The prototype includes a Security Center.
 
 ### Planned
 
-* [x] Sanctum authentication
-* [x] Password change
-* [x] Account deletion
-* [x] Token revocation
-* [x] Email verification
+* ✅ Sanctum authentication
+* ✅ Password change
+* ✅ Account deletion
+* ✅ Token revocation
+* ✅ Email verification
 * [ ] Active device/session management
 * [ ] Login history
 * [ ] Security events
@@ -328,10 +329,10 @@ Current profile capability is already partially implemented.
 
 Remaining:
 
-* [x] Profile retrieval
-* [x] Profile update
-* [x] Avatar upload
-* [x] Avatar removal
+* ✅ Profile retrieval
+* ✅ Profile update
+* ✅ Avatar upload
+* ✅ Avatar removal
 * [ ] Notification preferences
 * [ ] Subscription preferences
 * [ ] Default units
