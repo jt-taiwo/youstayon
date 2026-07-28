@@ -8,6 +8,7 @@ use App\Domains\Subscription\Controllers\GetSubscriptionController;
 use App\Domains\Subscription\Controllers\GetSubscriptionUsageSummaryController;
 use App\Domains\Subscription\Controllers\ListSubscriptionCategoriesController;
 use App\Domains\Subscription\Controllers\ListSubscriptionsController;
+use App\Domains\Subscription\Controllers\ListSubscriptionRenewalHistoryController;
 use App\Domains\Subscription\Controllers\ListSubscriptionUsageController;
 use App\Domains\Subscription\Controllers\CancelSubscriptionController;
 use App\Domains\Subscription\Controllers\RecordSubscriptionUsageController;
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get(
         '/subscriptions/{uuid}/usage',
         ListSubscriptionUsageController::class
+    );
+
+    Route::get(
+        '/subscriptions/{uuid}/renewals',
+        ListSubscriptionRenewalHistoryController::class
     );
 
     Route::post(
