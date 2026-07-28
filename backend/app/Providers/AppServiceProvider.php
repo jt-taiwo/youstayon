@@ -10,8 +10,10 @@ use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionUsageServiceInterface;
+use App\Domains\Subscription\Contracts\SubscriptionRenewalHistoryRepositoryInterface;
 use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
+use App\Domains\Subscription\Repositories\SubscriptionRenewalHistoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
 use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
 use App\Domains\Subscription\Contracts\RecordSubscriptionUsageServiceInterface;
@@ -65,6 +67,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ListSubscriptionUsageServiceInterface::class,
             ListSubscriptionUsageService::class
+        );
+
+        $this->app->bind(
+            SubscriptionRenewalHistoryRepositoryInterface::class,
+            SubscriptionRenewalHistoryRepository::class
         );
     }
 
