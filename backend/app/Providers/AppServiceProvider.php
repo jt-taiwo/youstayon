@@ -16,12 +16,14 @@ use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRenewalHistoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
 use App\Domains\Subscription\Contracts\ListSubscriptionRenewalHistoryServiceInterface;
+use App\Domains\Subscription\Contracts\SubscriptionExpiryPredictionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
 use App\Domains\Subscription\Contracts\RecordSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Repositories\SubscriptionUsageRepository;
 use App\Domains\Subscription\Services\ListSubscriptionRenewalHistoryService;
 use App\Domains\Subscription\Services\RenewSubscriptionService;
 use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
+use App\Domains\Subscription\Services\SubscriptionExpiryPredictionService;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -80,7 +82,12 @@ final class AppServiceProvider extends ServiceProvider
             ListSubscriptionRenewalHistoryServiceInterface::class,
             ListSubscriptionRenewalHistoryService::class
         );
-        
+
+        $this->app->bind(
+            SubscriptionExpiryPredictionServiceInterface::class,
+            SubscriptionExpiryPredictionService::class
+        );
+
     }
 
     /**

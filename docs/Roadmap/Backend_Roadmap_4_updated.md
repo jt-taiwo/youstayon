@@ -306,3 +306,93 @@ git push origin main
 Only after this engine is complete will we expose it through APIs and then build the full **Radar Intelligence** capability on top of it.
 
 This is still completely aligned with the roadmap and keeps the domain model clean, reusable, and production-grade.
+
+<!-- =====================ACHIEVEMENT SO FAR======================= -->
+Excellent. This is a significant milestone.
+
+You now have 135 passing tests (344 assertions), and the Subscription Expiry Prediction Engine is working correctly. More importantly, this implementation is still aligned with the roadmap we established: we have not deviated from the YouStayOn architecture or the Radar Intelligence direction.
+
+### Radar intelligence milestone status
+
+Completed
+
+Prediction engine implemented
+
+The subscription prediction capability is now implemented and verified through unit tests.
+
+### What is now implemented
+
+* Subscription health classification (Healthy, Warning, Critical, Exhausted, Expired)
+
+* Days remaining calculation
+
+* Usage limit analysis
+
+* Remaining quota calculation
+
+* Average daily usage computation from historical usage records
+
+* Predicted depletion date estimation
+
+* Health priority rules (Expired > Exhausted > Critical > Warning > Healthy)
+
+* Risk level generation
+
+* Prediction DTO and service architecture
+
+* Service interface binding
+
+* 11 dedicated unit tests covering prediction scenarios
+
+This is the core intelligence layer of YouStayOn. The app can now reason about a user's subscription state rather than simply storing subscription records.
+
+### What we should commit now
+
+This prediction engine is a self-contained capability and should be committed before exposing it through APIs.
+
+Recommended commit message:
+
+Bash
+
+```
+git add .
+git commit -m "feat: implement subscription expiry prediction engine"
+git push origin main
+```
+
+### Next roadmap capability (still aligned)
+
+The next production requirement is Prediction API & Radar Endpoints.
+
+This exposes the intelligence engine through authenticated APIs so the Flutter frontend can render the Radar dashboard.
+
+Planned endpoints:
+
+| Endpoint                                 | Purpose                                |
+| ---------------------------------------- | -------------------------------------- |
+| GET /api/subscriptions/{uuid}/prediction | Prediction for a single subscription   |
+| GET /api/radar/subscriptions             | Predictions for all user subscriptions |
+| GET /api/radar/overview                  | Aggregated dashboard metrics           |
+
+The overview endpoint will provide metrics such as:
+
+* total subscriptions
+
+* healthy subscriptions
+
+* warning subscriptions
+
+* critical subscriptions
+
+* exhausted subscriptions
+
+* expired subscriptions
+
+* subscriptions predicted to deplete before expiry
+
+* average days remaining
+
+This is exactly what powers the “Never Get Caught Offline” experience and keeps us directly on the updated roadmap toward the Radar Intelligence dashboard.
+
+I recommend we commit this milestone first, then immediately build the Prediction API layer (controllers, resources, routes, feature tests, and dashboard aggregation service) before moving into notification intelligence and reminder automation.
+
