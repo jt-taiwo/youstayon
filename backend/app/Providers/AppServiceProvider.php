@@ -6,6 +6,22 @@ namespace App\Providers;
 
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
+use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
+use App\Domains\Notification\Contracts\GenerateSubscriptionRemindersServiceInterface;
+use App\Domains\Notification\Contracts\NotificationRepositoryInterface;
+
+use App\Domains\Notification\Contracts\ListNotificationsServiceInterface;
+use App\Domains\Notification\Contracts\MarkNotificationReadServiceInterface;
+use App\Domains\Notification\Contracts\MarkAllNotificationsReadServiceInterface;
+use App\Domains\Notification\Contracts\GetUnreadNotificationCountServiceInterface;
+use App\Domains\Notification\Repositories\NotificationRepository;
+use App\Domains\Notification\Services\CreateNotificationService;
+use App\Domains\Notification\Services\GenerateSubscriptionRemindersService;
+use App\Domains\Notification\Services\ListNotificationsService;
+use App\Domains\Notification\Services\MarkNotificationReadService;
+use App\Domains\Notification\Services\MarkAllNotificationsReadService;
+use App\Domains\Notification\Services\GetUnreadNotificationCountService;
+
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
@@ -86,6 +102,41 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             SubscriptionExpiryPredictionServiceInterface::class,
             SubscriptionExpiryPredictionService::class
+        );
+
+        $this->app->bind(
+            NotificationRepositoryInterface::class,
+            NotificationRepository::class
+        );
+
+        $this->app->bind(
+            CreateNotificationServiceInterface::class,
+            CreateNotificationService::class
+        );
+
+        $this->app->bind(
+            GenerateSubscriptionRemindersServiceInterface::class,
+            GenerateSubscriptionRemindersService::class
+        );
+
+        $this->app->bind(
+            ListNotificationsServiceInterface::class,
+            ListNotificationsService::class
+        );
+
+        $this->app->bind(
+            MarkNotificationReadServiceInterface::class,
+            MarkNotificationReadService::class
+        );
+
+        $this->app->bind(
+            MarkAllNotificationsReadServiceInterface::class,
+            MarkAllNotificationsReadService::class
+        );
+
+        $this->app->bind(
+            GetUnreadNotificationCountServiceInterface::class,
+            GetUnreadNotificationCountService::class
         );
 
     }
