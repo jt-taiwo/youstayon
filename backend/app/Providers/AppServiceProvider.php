@@ -9,7 +9,6 @@ use App\Domains\Authentication\Repositories\AuthenticationRepository;
 use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
 use App\Domains\Notification\Contracts\GenerateSubscriptionRemindersServiceInterface;
 use App\Domains\Notification\Contracts\NotificationRepositoryInterface;
-
 use App\Domains\Notification\Contracts\ListNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\MarkNotificationReadServiceInterface;
 use App\Domains\Notification\Contracts\MarkAllNotificationsReadServiceInterface;
@@ -22,26 +21,29 @@ use App\Domains\Notification\Services\MarkNotificationReadService;
 use App\Domains\Notification\Services\MarkAllNotificationsReadService;
 use App\Domains\Notification\Services\GetUnreadNotificationCountService;
 
+use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRenewalHistoryRepositoryInterface;
+use App\Domains\Subscription\Services\GenerateRadarRecommendationService;
 use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRenewalHistoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
+use App\Domains\Subscription\Contracts\GetDailyRadarDigestServiceInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionRenewalHistoryServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionExpiryPredictionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
 use App\Domains\Subscription\Contracts\RecordSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Repositories\SubscriptionUsageRepository;
+use App\Domains\Subscription\Services\GetRadarSubscriptionsService;
 use App\Domains\Subscription\Services\ListSubscriptionRenewalHistoryService;
 use App\Domains\Subscription\Services\RenewSubscriptionService;
 use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
 use App\Domains\Subscription\Services\SubscriptionExpiryPredictionService;
 use Illuminate\Support\ServiceProvider;
-
 final class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -137,6 +139,16 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GetUnreadNotificationCountServiceInterface::class,
             GetUnreadNotificationCountService::class
+        );
+
+        $this->app->bind(
+            GenerateRadarRecommendationServiceInterface::class,
+            GenerateRadarRecommendationService::class
+        );
+
+        $this->app->bind(
+            GetDailyRadarDigestServiceInterface::class,
+            GetRadarSubscriptionsService::class
         );
 
     }
