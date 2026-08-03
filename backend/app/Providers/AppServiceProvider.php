@@ -6,12 +6,14 @@ namespace App\Providers;
 
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
+
 use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
 use App\Domains\Notification\Contracts\GenerateSubscriptionRemindersServiceInterface;
 use App\Domains\Notification\Contracts\NotificationRepositoryInterface;
 use App\Domains\Notification\Contracts\ListNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\MarkNotificationReadServiceInterface;
 use App\Domains\Notification\Contracts\MarkAllNotificationsReadServiceInterface;
+use App\Domains\Notification\Contracts\GenerateRadarNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\GetUnreadNotificationCountServiceInterface;
 use App\Domains\Notification\Repositories\NotificationRepository;
 use App\Domains\Notification\Services\CreateNotificationService;
@@ -20,6 +22,7 @@ use App\Domains\Notification\Services\ListNotificationsService;
 use App\Domains\Notification\Services\MarkNotificationReadService;
 use App\Domains\Notification\Services\MarkAllNotificationsReadService;
 use App\Domains\Notification\Services\GetUnreadNotificationCountService;
+use App\Domains\Notification\Services\GenerateRadarNotificationsService;
 
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
@@ -149,6 +152,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GetDailyRadarDigestServiceInterface::class,
             GetRadarSubscriptionsService::class
+        );
+
+        $this->app->bind(
+            GenerateRadarNotificationsServiceInterface::class,
+            GenerateRadarNotificationsService::class
         );
 
     }

@@ -15,3 +15,7 @@ Schedule::command(
 Schedule::command(
     'subscriptions:generate-reminders'
 )->hourly();
+
+Schedule::command(
+    'radar:generate-notifications'
+)->hourly();
