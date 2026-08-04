@@ -19,3 +19,7 @@ Schedule::command(
 Schedule::command(
     'radar:generate-notifications'
 )->hourly();
+
+Schedule::command(
+    'notifications:deliver'
+)->everyFiveMinutes();

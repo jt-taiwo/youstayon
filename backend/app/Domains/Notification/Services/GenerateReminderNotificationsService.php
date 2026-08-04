@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domains\Notification\Services;
 
-use App\Domains\Notification\Contracts\GenerateRadarNotificationsServiceInterface;
+use App\Domains\Notification\Contracts\GenerateReminderNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\NotificationThrottleServiceInterface;
 use App\Domains\Notification\Contracts\RenderNotificationTemplateServiceInterface;
 use App\Domains\Notification\Enums\NotificationTemplate;
 use App\Domains\Notification\Models\Notification;
-use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
-use App\Domains\Subscription\Enums\RadarPriority;
 use Illuminate\Support\Str;
 
-final readonly class GenerateRadarNotificationsService
-    implements GenerateRadarNotificationsServiceInterface
+final readonly class GenerateReminderNotificationsService
+    implements GenerateReminderNotificationsServiceInterface
 {
     public function __construct(
         private SubscriptionRepositoryInterface $subscriptions,
-        private GenerateRadarRecommendationServiceInterface $recommendations,
         private RenderNotificationTemplateServiceInterface $templates,
         private NotificationThrottleServiceInterface $throttle,
     ) {
@@ -29,33 +26,18 @@ final readonly class GenerateRadarNotificationsService
     {
         $created = 0;
 
-        foreach ($this->subscriptions->findActiveSubscriptionsWithUsageLimits() as $subscription) {
-            $result = $this->recommendations->execute($subscription);
-
-            if ($result->priority === RadarPriority::HEALTHY) {
-                continue;
-            }
-
-            $template = match ($result->priority) {
-                RadarPriority::EXPIRED => NotificationTemplate::SUBSCRIPTION_EXPIRED,
-                RadarPriority::EXHAUSTED => NotificationTemplate::DATA_EXHAUSTED,
-                RadarPriority::CRITICAL => NotificationTemplate::DATA_CRITICAL,
-                RadarPriority::WARNING => NotificationTemplate::DATA_WARNING,
-                RadarPriority::HEALTHY => NotificationTemplate::REMINDER,
-            };
-
+        foreach ($this->subscriptions->findActiveSubscriptionsDueForExpiry() as $subscription) {
             $content = $this->templates->render(
-                $template,
+                NotificationTemplate::REMINDER,
                 [
                     'plan' => $subscription->plan_name,
                 ]
             );
 
-            // This prevents the same radar notification from being generated more than once within 60 minutes.
             if (
                 ! $this->throttle->canSend(
                     $subscription->user,
-                    'radar',
+                    'reminder',
                     $content['title'],
                     60
                 )
@@ -66,7 +48,7 @@ final readonly class GenerateRadarNotificationsService
             Notification::query()->create([
                 'uuid' => (string) Str::uuid(),
                 'user_id' => $subscription->user_id,
-                'type' => 'radar',
+                'type' => 'reminder',
                 'title' => $content['title'],
                 'message' => $content['message'],
                 'read_at' => null,

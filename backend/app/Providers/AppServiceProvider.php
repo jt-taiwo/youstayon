@@ -8,21 +8,31 @@ use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
 use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
+use App\Domains\Notification\Contracts\DeliverNotificationServiceInterface;
 use App\Domains\Notification\Contracts\GenerateSubscriptionRemindersServiceInterface;
+use App\Domains\Notification\Contracts\NotificationQuietHoursServiceInterface;
 use App\Domains\Notification\Contracts\NotificationRepositoryInterface;
+use App\Domains\Notification\Contracts\NotificationThrottleServiceInterface;
 use App\Domains\Notification\Contracts\ListNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\MarkNotificationReadServiceInterface;
 use App\Domains\Notification\Contracts\MarkAllNotificationsReadServiceInterface;
 use App\Domains\Notification\Contracts\GenerateRadarNotificationsServiceInterface;
 use App\Domains\Notification\Contracts\GetUnreadNotificationCountServiceInterface;
+use App\Domains\Notification\Contracts\RenderNotificationTemplateServiceInterface;
+use App\Domains\Notification\Contracts\UserNotificationPreferenceRepositoryInterface;
 use App\Domains\Notification\Repositories\NotificationRepository;
+use App\Domains\Notification\Repositories\UserNotificationPreferenceRepository;
 use App\Domains\Notification\Services\CreateNotificationService;
+use App\Domains\Notification\Services\DeliverNotificationService;
 use App\Domains\Notification\Services\GenerateSubscriptionRemindersService;
 use App\Domains\Notification\Services\ListNotificationsService;
 use App\Domains\Notification\Services\MarkNotificationReadService;
 use App\Domains\Notification\Services\MarkAllNotificationsReadService;
+use App\Domains\Notification\Services\NotificationQuietHoursService;
+use App\Domains\Notification\Services\NotificationThrottleService;
 use App\Domains\Notification\Services\GetUnreadNotificationCountService;
 use App\Domains\Notification\Services\GenerateRadarNotificationsService;
+use App\Domains\Notification\Services\RenderNotificationTemplateService;
 
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
@@ -157,6 +167,31 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GenerateRadarNotificationsServiceInterface::class,
             GenerateRadarNotificationsService::class
+        );
+
+        $this->app->bind(
+            DeliverNotificationServiceInterface::class,
+            DeliverNotificationService::class
+        ); 
+
+        $this->app->bind(
+            RenderNotificationTemplateServiceInterface::class,
+            RenderNotificationTemplateService::class
+        );
+
+        $this->app->bind(
+            UserNotificationPreferenceRepositoryInterface::class,
+            UserNotificationPreferenceRepository::class
+        );
+
+        $this->app->bind(
+            NotificationQuietHoursServiceInterface::class,
+            NotificationQuietHoursService::class
+        );
+
+        $this->app->bind(
+            NotificationThrottleServiceInterface::class,
+            NotificationThrottleService::class
         );
 
     }
