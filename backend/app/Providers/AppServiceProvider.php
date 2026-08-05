@@ -7,6 +7,22 @@ namespace App\Providers;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
+use App\Domains\Dashboard\Contracts\GetCategoryBreakdownServiceInterface;
+use App\Domains\Dashboard\Contracts\GetDashboardOverviewServiceInterface;
+use App\Domains\Dashboard\Contracts\GetDashboardSnapshotServiceInterface;
+use App\Domains\Dashboard\Contracts\GetRadarScoreServiceInterface;
+use App\Domains\Dashboard\Contracts\GetRecentActivityServiceInterface;
+use App\Domains\Dashboard\Contracts\GetSpendingAnalyticsServiceInterface;
+use App\Domains\Dashboard\Contracts\GetUsageTrendsServiceInterface;
+
+use App\Domains\Dashboard\Services\GetCategoryBreakdownService;
+use App\Domains\Dashboard\Services\GetDashboardOverviewService;
+use App\Domains\Dashboard\Services\GetDashboardSnapshotService;
+use App\Domains\Dashboard\Services\GetRadarScoreService;
+use App\Domains\Dashboard\Services\GetRecentActivityService;
+use App\Domains\Dashboard\Services\GetSpendingAnalyticsService;
+use App\Domains\Dashboard\Services\GetUsageTrendsService;
+
 use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
 use App\Domains\Notification\Contracts\DeliverNotificationServiceInterface;
 use App\Domains\Notification\Contracts\GenerateSubscriptionRemindersServiceInterface;
@@ -192,6 +208,41 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             NotificationThrottleServiceInterface::class,
             NotificationThrottleService::class
+        );
+
+        $this->app->bind(
+            GetDashboardOverviewServiceInterface::class,
+            GetDashboardOverviewService::class
+        );
+
+        $this->app->bind(
+            GetCategoryBreakdownServiceInterface::class,
+            GetCategoryBreakdownService::class
+        );
+
+        $this->app->bind(
+            GetUsageTrendsServiceInterface::class,
+            GetUsageTrendsService::class
+        );
+
+        $this->app->bind(
+            GetRecentActivityServiceInterface::class,
+            GetRecentActivityService::class
+        );
+
+        $this->app->bind(
+            GetSpendingAnalyticsServiceInterface::class,
+            GetSpendingAnalyticsService::class
+        );
+
+        $this->app->bind(
+            GetRadarScoreServiceInterface::class,
+            GetRadarScoreService::class
+        );
+
+        $this->app->bind(
+            GetDashboardSnapshotServiceInterface::class,
+            GetDashboardSnapshotService::class
         );
 
     }
