@@ -88,6 +88,12 @@ use App\Domains\Subscription\Services\RenewSubscriptionService;
 use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
 use App\Domains\Subscription\Services\SimulateAutoRenewService;
 use App\Domains\Subscription\Services\SubscriptionExpiryPredictionService;
+
+use App\Domains\Wallet\Contracts\FundWalletServiceInterface;
+use App\Domains\Wallet\Contracts\WalletRepositoryInterface;
+use App\Domains\Wallet\Repositories\WalletRepository;
+use App\Domains\Wallet\Services\FundWalletService;
+
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -290,6 +296,16 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GenerateIntelligenceRecommendationServiceInterface::class,
             GenerateIntelligenceRecommendationService::class
+        );
+
+        $this->app->bind(
+            WalletRepositoryInterface::class,
+            WalletRepository::class
+        );
+
+        $this->app->bind(
+            FundWalletServiceInterface::class,
+            FundWalletService::class
         );
 
     }
