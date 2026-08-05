@@ -7,6 +7,9 @@ namespace App\Providers;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
+use App\Domains\Budget\Contracts\GetPredictiveBudgetServiceInterface;
+use App\Domains\Budget\Services\GetPredictiveBudgetService;
+
 use App\Domains\Dashboard\Contracts\GetCategoryBreakdownServiceInterface;
 use App\Domains\Dashboard\Contracts\GetDashboardOverviewServiceInterface;
 use App\Domains\Dashboard\Contracts\GetDashboardSnapshotServiceInterface;
@@ -22,6 +25,9 @@ use App\Domains\Dashboard\Services\GetRadarScoreService;
 use App\Domains\Dashboard\Services\GetRecentActivityService;
 use App\Domains\Dashboard\Services\GetSpendingAnalyticsService;
 use App\Domains\Dashboard\Services\GetUsageTrendsService;
+
+use App\Domains\Intelligence\Contracts\GenerateIntelligenceRecommendationServiceInterface;
+use App\Domains\Intelligence\Services\GenerateIntelligenceRecommendationService;
 
 use App\Domains\Notification\Contracts\CreateNotificationServiceInterface;
 use App\Domains\Notification\Contracts\DeliverNotificationServiceInterface;
@@ -50,6 +56,7 @@ use App\Domains\Notification\Services\GetUnreadNotificationCountService;
 use App\Domains\Notification\Services\GenerateRadarNotificationsService;
 use App\Domains\Notification\Services\RenderNotificationTemplateService;
 
+use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
@@ -61,18 +68,28 @@ use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRenewalHistoryRepository;
 use App\Domains\Subscription\Repositories\SubscriptionRepository;
+
+use App\Domains\Subscription\Contracts\GenerateCheapestEquivalentPlanRecommendationServiceInterface;
+use App\Domains\Subscription\Contracts\GenerateRenewalSuggestionServiceInterface;
 use App\Domains\Subscription\Contracts\GetDailyRadarDigestServiceInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionRenewalHistoryServiceInterface;
+use App\Domains\Subscription\Contracts\SimulateAutoRenewServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionExpiryPredictionServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionUsageRepositoryInterface;
 use App\Domains\Subscription\Contracts\RecordSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Repositories\SubscriptionUsageRepository;
+
+use App\Domains\Subscription\Services\DetectSubscriptionConflictsService;
+use App\Domains\Subscription\Services\GenerateCheapestEquivalentPlanRecommendationService;
+use App\Domains\Subscription\Services\GenerateRenewalSuggestionService;
 use App\Domains\Subscription\Services\GetRadarSubscriptionsService;
 use App\Domains\Subscription\Services\ListSubscriptionRenewalHistoryService;
 use App\Domains\Subscription\Services\RenewSubscriptionService;
 use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
+use App\Domains\Subscription\Services\SimulateAutoRenewService;
 use App\Domains\Subscription\Services\SubscriptionExpiryPredictionService;
 use Illuminate\Support\ServiceProvider;
+
 final class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -243,6 +260,36 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GetDashboardSnapshotServiceInterface::class,
             GetDashboardSnapshotService::class
+        );
+
+        $this->app->bind(
+            GenerateRenewalSuggestionServiceInterface::class,
+            GenerateRenewalSuggestionService::class
+        );
+
+        $this->app->bind(
+            GenerateCheapestEquivalentPlanRecommendationServiceInterface::class,
+            GenerateCheapestEquivalentPlanRecommendationService::class
+        );
+        
+        $this->app->bind(
+            SimulateAutoRenewServiceInterface::class,
+            SimulateAutoRenewService::class
+        );
+
+        $this->app->bind(
+            DetectSubscriptionConflictsServiceInterface::class,
+            DetectSubscriptionConflictsService::class
+        );
+
+        $this->app->bind(
+            GetPredictiveBudgetServiceInterface::class,
+            GetPredictiveBudgetService::class
+        );
+
+        $this->app->bind(
+            GenerateIntelligenceRecommendationServiceInterface::class,
+            GenerateIntelligenceRecommendationService::class
         );
 
     }
