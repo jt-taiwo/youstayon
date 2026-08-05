@@ -56,6 +56,10 @@ use App\Domains\Notification\Services\GetUnreadNotificationCountService;
 use App\Domains\Notification\Services\GenerateRadarNotificationsService;
 use App\Domains\Notification\Services\RenderNotificationTemplateService;
 
+use App\Domains\Payment\Contracts\PaymentGatewayInterface;
+use App\Domains\Payment\Gateways\MonnifyPaymentGateway;
+use App\Domains\Payment\Gateways\MonnifyTokenService;
+
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
@@ -306,6 +310,15 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             FundWalletServiceInterface::class,
             FundWalletService::class
+        );
+
+        $this->app->singleton(
+            MonnifyTokenService::class
+        );
+
+        $this->app->bind(
+            PaymentGatewayInterface::class,
+            MonnifyPaymentGateway::class
         );
 
     }
