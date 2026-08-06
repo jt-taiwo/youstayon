@@ -56,9 +56,16 @@ use App\Domains\Notification\Services\GetUnreadNotificationCountService;
 use App\Domains\Notification\Services\GenerateRadarNotificationsService;
 use App\Domains\Notification\Services\RenderNotificationTemplateService;
 
+use App\Domains\Payment\Contracts\InitializeWalletFundingServiceInterface;
 use App\Domains\Payment\Contracts\PaymentGatewayInterface;
+use App\Domains\Payment\Contracts\PaymentTransactionRepositoryInterface;
+use App\Domains\Payment\Contracts\VerifyWalletFundingServiceInterface;
+
 use App\Domains\Payment\Gateways\MonnifyPaymentGateway;
 use App\Domains\Payment\Gateways\MonnifyTokenService;
+use App\Domains\Payment\Repositories\PaymentTransactionRepository;
+use App\Domains\Payment\Services\InitializeWalletFundingService;
+use App\Domains\Payment\Services\VerifyWalletFundingService;
 
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
@@ -67,6 +74,7 @@ use App\Domains\Subscription\Contracts\SubscriptionCategoryRepositoryInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRenewalHistoryRepositoryInterface;
+
 use App\Domains\Subscription\Services\GenerateRadarRecommendationService;
 use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
@@ -319,6 +327,21 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PaymentGatewayInterface::class,
             MonnifyPaymentGateway::class
+        );
+
+        $this->app->bind(
+            PaymentTransactionRepositoryInterface::class,
+            PaymentTransactionRepository::class
+        );
+
+        $this->app->bind(
+            InitializeWalletFundingServiceInterface::class,
+            InitializeWalletFundingService::class
+        );
+
+        $this->app->bind(
+            VerifyWalletFundingServiceInterface::class,
+            VerifyWalletFundingService::class
         );
 
     }
