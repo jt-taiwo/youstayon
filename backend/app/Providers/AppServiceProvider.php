@@ -67,6 +67,9 @@ use App\Domains\Payment\Repositories\PaymentTransactionRepository;
 use App\Domains\Payment\Services\InitializeWalletFundingService;
 use App\Domains\Payment\Services\VerifyWalletFundingService;
 
+use App\Domains\Purchase\Contracts\UtilityProviderInterface;
+use App\Domains\Purchase\Providers\FakeUtilityProvider;
+
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
@@ -342,6 +345,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             VerifyWalletFundingServiceInterface::class,
             VerifyWalletFundingService::class
+        );
+
+        $this->app->bind(
+            UtilityProviderInterface::class,
+            FakeUtilityProvider::class
         );
 
     }
