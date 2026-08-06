@@ -67,8 +67,12 @@ use App\Domains\Payment\Repositories\PaymentTransactionRepository;
 use App\Domains\Payment\Services\InitializeWalletFundingService;
 use App\Domains\Payment\Services\VerifyWalletFundingService;
 
+use App\Domains\Purchase\Contracts\ExecuteWalletPurchaseServiceInterface;
+use App\Domains\Purchase\Contracts\PurchaseRepositoryInterface;
 use App\Domains\Purchase\Contracts\UtilityProviderInterface;
 use App\Domains\Purchase\Providers\FakeUtilityProvider;
+use App\Domains\Purchase\Repositories\PurchaseRepository;
+use App\Domains\Purchase\Services\ExecuteWalletPurchaseService;
 
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
@@ -104,9 +108,13 @@ use App\Domains\Subscription\Services\RecordSubscriptionUsageService;
 use App\Domains\Subscription\Services\SimulateAutoRenewService;
 use App\Domains\Subscription\Services\SubscriptionExpiryPredictionService;
 
+use App\Domains\Wallet\Contracts\DebitWalletServiceInterface;
 use App\Domains\Wallet\Contracts\FundWalletServiceInterface;
 use App\Domains\Wallet\Contracts\WalletRepositoryInterface;
 use App\Domains\Wallet\Repositories\WalletRepository;
+
+
+use App\Domains\Wallet\Services\DebitWalletService;
 use App\Domains\Wallet\Services\FundWalletService;
 
 use Illuminate\Support\ServiceProvider;
@@ -350,6 +358,21 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UtilityProviderInterface::class,
             FakeUtilityProvider::class
+        );
+
+        $this->app->bind(
+            DebitWalletServiceInterface::class,
+            DebitWalletService::class
+        );
+
+        $this->app->bind(
+            PurchaseRepositoryInterface::class,
+            PurchaseRepository::class
+        );
+
+        $this->app->bind(
+            ExecuteWalletPurchaseServiceInterface::class,
+            ExecuteWalletPurchaseService::class
         );
 
     }
