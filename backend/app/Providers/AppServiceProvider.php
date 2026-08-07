@@ -68,11 +68,15 @@ use App\Domains\Payment\Services\InitializeWalletFundingService;
 use App\Domains\Payment\Services\VerifyWalletFundingService;
 
 use App\Domains\Purchase\Contracts\ExecuteWalletPurchaseServiceInterface;
+use App\Domains\Purchase\Contracts\InitializePayNowPurchaseServiceInterface;
 use App\Domains\Purchase\Contracts\PurchaseRepositoryInterface;
 use App\Domains\Purchase\Contracts\UtilityProviderInterface;
+use App\Domains\Purchase\Contracts\VerifyPayNowPurchaseServiceInterface;
 use App\Domains\Purchase\Providers\FakeUtilityProvider;
 use App\Domains\Purchase\Repositories\PurchaseRepository;
 use App\Domains\Purchase\Services\ExecuteWalletPurchaseService;
+use App\Domains\Purchase\Services\InitializePayNowPurchaseService;
+use App\Domains\Purchase\Services\VerifyPayNowPurchaseService;
 
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
@@ -374,6 +378,18 @@ final class AppServiceProvider extends ServiceProvider
             ExecuteWalletPurchaseServiceInterface::class,
             ExecuteWalletPurchaseService::class
         );
+
+        $this->app->bind(
+            InitializePayNowPurchaseServiceInterface::class,
+            InitializePayNowPurchaseService::class
+        );
+
+        $this->app->bind(
+            VerifyPayNowPurchaseServiceInterface::class,
+            VerifyPayNowPurchaseService::class
+        );
+
+
 
     }
 
