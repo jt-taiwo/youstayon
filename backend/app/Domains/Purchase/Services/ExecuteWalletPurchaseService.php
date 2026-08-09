@@ -20,7 +20,8 @@ final readonly class ExecuteWalletPurchaseService
     public function __construct(
         private DebitWalletServiceInterface $wallets,
         private PurchaseRepositoryInterface $purchases,
-        private UtilityProviderInterface $provider
+        private UtilityProviderInterface $provider,
+        private AutoRenewSubscriptionServiceInterface $renewals
     ) {
     }
 
@@ -63,26 +64,30 @@ final readonly class ExecuteWalletPurchaseService
                 ]
             );
 
-            $result = $this->provider
-                ->purchase(
-                    serviceType: $serviceType,
-                    amount: $amount,
-                    payload: $payload
-                );
+            $result = $this->provider->purchase(
+                serviceType: $serviceType,
+                amount: $amount,
+                payload: $payload
+            );
 
-            $purchase->provider_reference =
-                $result->providerReference;
-
-            $purchase->status = $result->successful
-                ? 'successful'
-                : 'failed';
-
-            $purchase->response_payload =
-                $result->response;
-
+            $purchase->provider_reference = $result->providerReference;
+            $purchase->status = $result->successful ? 'successful' : 'failed';
+            $purchase->response_payload = $result->response;
             $purchase->completed_at = Carbon::now();
 
-            return $this->purchases->save($purchase);
+            $purchase = $this->purchases->save($purchase);
+
+            if (
+                $purchase->subscription !== null &&
+                $purchase->status === 'successful'
+            ) {
+                $this->renewals->execute(
+                    $purchase->subscription,
+                    $purchase
+                );
+            }
+
+            return $purchase;
         });
     }
 }

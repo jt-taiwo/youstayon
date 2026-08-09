@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domains\Purchase\Models;
 
+
+use App\Domains\Subscription\Models\Subscription;
 use App\Domains\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Database\Factories\PurchaseFactory;
 
 final class Purchase extends Model
 {
@@ -16,6 +19,7 @@ final class Purchase extends Model
     protected $fillable = [
         'uuid',
         'user_id',
+        'subscription_id',
         'service_type',
         'provider',
         'provider_reference',
@@ -40,4 +44,18 @@ final class Purchase extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(
+            Subscription::class
+        );
+    }
+
+
+    protected static function newFactory(): PurchaseFactory
+    {
+        return PurchaseFactory::new();
+    } 
+
 }

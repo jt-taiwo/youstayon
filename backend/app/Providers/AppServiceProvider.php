@@ -80,6 +80,8 @@ use App\Domains\Purchase\Services\ExecuteWalletPurchaseService;
 use App\Domains\Purchase\Services\InitializePayNowPurchaseService;
 use App\Domains\Purchase\Services\VerifyPayNowPurchaseService;
 
+
+use App\Domains\Subscription\Contracts\AutoRenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
 use App\Domains\Subscription\Contracts\GenerateRadarRecommendationServiceInterface;
 use App\Domains\Subscription\Contracts\RenewSubscriptionServiceInterface;
@@ -88,6 +90,7 @@ use App\Domains\Subscription\Contracts\SubscriptionRepositoryInterface;
 use App\Domains\Subscription\Contracts\ListSubscriptionUsageServiceInterface;
 use App\Domains\Subscription\Contracts\SubscriptionRenewalHistoryRepositoryInterface;
 
+use App\Domains\Subscription\Services\AutoRenewSubscriptionService;
 use App\Domains\Subscription\Services\GenerateRadarRecommendationService;
 use App\Domains\Subscription\Services\ListSubscriptionUsageService;
 use App\Domains\Subscription\Repositories\SubscriptionCategoryRepository;
@@ -394,6 +397,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CheckoutPurchaseServiceInterface::class,
             CheckoutPurchaseService::class
+        );
+
+        $this->app->bind(
+            AutoRenewSubscriptionServiceInterface::class,
+            AutoRenewSubscriptionService::class
         );
 
 

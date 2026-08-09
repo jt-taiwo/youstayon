@@ -18,7 +18,8 @@ final readonly class VerifyPayNowPurchaseService
         private PaymentGatewayInterface $gateway,
         private PaymentTransactionRepositoryInterface $payments,
         private PurchaseRepositoryInterface $purchases,
-        private UtilityProviderInterface $provider
+        private UtilityProviderInterface $provider,
+        private AutoRenewSubscriptionServiceInterface $renewals
     ) {
     }
 
@@ -26,8 +27,7 @@ final readonly class VerifyPayNowPurchaseService
         string $reference
     ): bool {
 
-        $payment = $this->payments
-            ->findByReference($reference);
+        $payment = $this->payments->findByReference($reference);
 
         if ($payment === null) {
             return false;
@@ -37,8 +37,7 @@ final readonly class VerifyPayNowPurchaseService
             return true;
         }
 
-        $verification = $this->gateway
-            ->verifyPayment($reference);
+        $verification = $this->gateway->verifyPayment($reference);
 
         if (! $verification->successful) {
             $payment->status = 'failed';
@@ -56,31 +55,30 @@ final readonly class VerifyPayNowPurchaseService
             return false;
         }
 
-        $result = $this->provider
-            ->purchase(
-                serviceType: $purchase->service_type,
-                amount: (float) $purchase->amount,
-                payload: $purchase->request_payload
-            );
+        $result = $this->provider->purchase(
+            serviceType: $purchase->service_type,
+            amount: (float) $purchase->amount,
+            payload: $purchase->request_payload
+        );
 
-        $purchase->provider_reference =
-            $result->providerReference;
-
-        $purchase->status = $result->successful
-            ? 'successful'
-            : 'failed';
-
-        $purchase->response_payload =
-            $result->response;
-
+        $purchase->provider_reference = $result->providerReference;
+        $purchase->status = $result->successful ? 'successful' : 'failed';
+        $purchase->response_payload = $result->response;
         $purchase->completed_at = Carbon::now();
 
-        $this->purchases->save($purchase);
+        $purchase = $this->purchases->save($purchase);
 
-        $payment->status = $result->successful
-            ? 'successful'
-            : 'failed';
+        if (
+            $purchase->subscription !== null &&
+            $purchase->status === 'successful'
+        ) {
+            $this->renewals->execute(
+                $purchase->subscription,
+                $purchase
+            );
+        }
 
+        $payment->status = $result->successful ? 'successful' : 'failed';
         $payment->paid_at = Carbon::now();
 
         $this->payments->save($payment);
