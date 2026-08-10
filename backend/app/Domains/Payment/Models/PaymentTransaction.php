@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Payment\Models;
 
 use App\Domains\User\Models\User;
+use Database\Factories\PaymentTransactionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,8 +33,14 @@ final class PaymentTransaction extends Model
         'paid_at' => 'datetime',
     ];
 
+    protected static function newFactory(): PaymentTransactionFactory
+    {
+        return PaymentTransactionFactory::new();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
 }

@@ -17,4 +17,6 @@ interface PurchaseRepositoryInterface
     public function save(
         Purchase $purchase
     ): Purchase;
+
+    public function findByReference(string $reference): ?\App\Domains\Purchase\Models\Purchase;
 }

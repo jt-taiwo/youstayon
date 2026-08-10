@@ -30,4 +30,12 @@ final class PurchaseRepository
 
         return $purchase->refresh();
     }
+
+    public function findByReference(string $reference): ?Purchase
+    {
+        return Purchase::query()
+            ->where('reference', $reference)
+            ->first();
+    }
+
 }

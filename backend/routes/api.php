@@ -9,3 +9,5 @@ require __DIR__.'/notification.php';
 require __DIR__.'/dashboard.php';
 require base_path('app/Domains/Intelligence/Routes/api.php');
 require base_path('app/Domains/Purchase/Routes/api.php');
+require base_path('app/Domains/Analytics/Routes/api.php');
+

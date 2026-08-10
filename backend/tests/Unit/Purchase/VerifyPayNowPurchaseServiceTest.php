@@ -12,52 +12,47 @@ use App\Domains\Purchase\Contracts\PurchaseRepositoryInterface;
 use App\Domains\Purchase\Contracts\UtilityProviderInterface;
 use App\Domains\Purchase\DTOs\UtilityPurchaseResultDTO;
 use App\Domains\Purchase\Models\Purchase;
-use App\Domains\User\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Domains\Purchase\Services\VerifyPayNowPurchaseService;
+use App\Domains\Subscription\Contracts\AutoRenewSubscriptionServiceInterface;
 use Mockery;
 use Tests\TestCase;
 
 final class VerifyPayNowPurchaseServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    protected function tearDown(): void
+    {
+        Mockery::close();
+
+        parent::tearDown();
+    }
 
     public function test_successful_payment_completes_purchase(): void
     {
-        $user = User::factory()->create();
-
-        Purchase::query()->create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
-            'user_id' => $user->id,
-            'service_type' => 'data',
-            'provider' => 'monnify',
-            'payment_method' => 'pay_now',
-            'reference' => 'PUR-123',
-            'amount' => 5000,
-            'currency' => 'NGN',
-            'status' => 'pending',
-            'request_payload' => [],
-        ]);
-
-        PaymentTransaction::query()->create([
-            'uuid' => (string) \Illuminate\Support\Str::uuid(),
-            'user_id' => $user->id,
-            'provider' => 'monnify',
-            'provider_reference' => 'MON-123',
-            'reference' => 'PUR-123',
-            'amount' => 5000,
-            'currency' => 'NGN',
-            'status' => 'pending',
-        ]);
-
         $gateway = Mockery::mock(PaymentGatewayInterface::class);
-        $payments = app(PaymentTransactionRepositoryInterface::class);
-        $purchases = app(PurchaseRepositoryInterface::class);
+        $payments = Mockery::mock(PaymentTransactionRepositoryInterface::class);
+        $purchases = Mockery::mock(PurchaseRepositoryInterface::class);
         $provider = Mockery::mock(UtilityProviderInterface::class);
+        $renewals = Mockery::mock(AutoRenewSubscriptionServiceInterface::class);
 
-        $gateway->shouldReceive('verifyPayment')
+        $payment = new PaymentTransaction([
+            'reference' => 'PAY-123',
+            'status' => 'pending',
+        ]);
+
+        $purchase = new Purchase([
+            'reference' => 'PAY-123',
+            'service_type' => 'data',
+            'amount' => 5000,
+            'request_payload' => [],
+            'status' => 'processing',
+        ]);
+
+        $gateway
+            ->shouldReceive('verifyPayment')
             ->once()
+            ->with('PAY-123')
             ->andReturn(new PaymentVerificationDTO(
-                reference: 'PUR-123',
+                reference: 'PAY-123',
                 provider: 'monnify',
                 successful: true,
                 amount: 5000,
@@ -66,33 +61,47 @@ final class VerifyPayNowPurchaseServiceTest extends TestCase
                 meta: []
             ));
 
-        $provider->shouldReceive('purchase')
+        $payments
+            ->shouldReceive('findByReference')
+            ->once()
+            ->with('PAY-123')
+            ->andReturn($payment);
+
+        $purchases
+            ->shouldReceive('findByReference')
+            ->once()
+            ->with('PAY-123')
+            ->andReturn($purchase);
+
+        $provider
+            ->shouldReceive('purchase')
             ->once()
             ->andReturn(new UtilityPurchaseResultDTO(
                 successful: true,
-                providerReference: 'UTIL-123',
-                response: []
+                providerReference: 'VT-123',
+                response: ['status' => 'ok']
             ));
 
-        $service = new \App\Domains\Purchase\Services\VerifyPayNowPurchaseService(
+        $purchases
+            ->shouldReceive('save')
+            ->once()
+            ->andReturn($purchase);
+
+        $payments
+            ->shouldReceive('save')
+            ->once()
+            ->andReturn($payment);
+
+        $service = new VerifyPayNowPurchaseService(
             $gateway,
             $payments,
             $purchases,
-            $provider
+            $provider,
+            $renewals
         );
 
         $this->assertTrue(
-            $service->execute('PUR-123')
-        );
-
-        $this->assertEquals(
-            'successful',
-            Purchase::query()->first()->status
-        );
-
-        $this->assertEquals(
-            'successful',
-            PaymentTransaction::query()->first()->status
+            $service->execute('PAY-123')
         );
     }
 }

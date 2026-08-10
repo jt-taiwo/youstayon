@@ -9,6 +9,7 @@ use App\Domains\Payment\Contracts\PaymentTransactionRepositoryInterface;
 use App\Domains\Purchase\Contracts\PurchaseRepositoryInterface;
 use App\Domains\Purchase\Contracts\UtilityProviderInterface;
 use App\Domains\Purchase\Contracts\VerifyPayNowPurchaseServiceInterface;
+use App\Domains\Subscription\Contracts\AutoRenewSubscriptionServiceInterface;
 use Illuminate\Support\Carbon;
 
 final readonly class VerifyPayNowPurchaseService
@@ -47,21 +48,16 @@ final readonly class VerifyPayNowPurchaseService
             return false;
         }
 
-        $purchase = \App\Domains\Purchase\Models\Purchase::query()
-            ->where('reference', $reference)
-            ->first();
+        $purchase = $this->purchases->findByReference($reference);
 
         if ($purchase === null) {
             return false;
         }
 
-         $provider = $this->providerManager->current();
-
-         $result = $provider->purchase(
-        
-            serviceType: $serviceType,
-            amount: $amount,
-            payload: $payload
+        $result = $this->provider->purchase(
+            serviceType: $purchase->service_type,
+            amount: (float) $purchase->amount,
+            payload: $purchase->request_payload
         );
 
         $purchase->provider_reference = $result->providerReference;

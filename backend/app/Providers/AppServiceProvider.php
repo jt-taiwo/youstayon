@@ -7,6 +7,9 @@ namespace App\Providers;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
+use App\Domains\Analytics\Contracts\GetCommerceOverviewServiceInterface;
+use App\Domains\Analytics\Services\GetCommerceOverviewService;
+
 use App\Domains\Budget\Contracts\GetPredictiveBudgetServiceInterface;
 use App\Domains\Budget\Services\GetPredictiveBudgetService;
 
@@ -415,6 +418,11 @@ final class AppServiceProvider extends ServiceProvider
         );
         $this->app->singleton(
             ProviderRetryService::class
+        );
+
+        $this->app->bind(
+            GetCommerceOverviewServiceInterface::class,
+            GetCommerceOverviewService::class
         );
 
 

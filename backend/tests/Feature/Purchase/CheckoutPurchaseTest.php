@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Purchase;
 
+use App\Domains\Payment\Contracts\PaymentGatewayInterface;
+use App\Domains\Payment\DTOs\PaymentInitializationDTO;
 use App\Domains\User\Models\User;
 use App\Domains\Wallet\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,6 +14,23 @@ use Tests\TestCase;
 final class CheckoutPurchaseTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $gateway = $this->createMock(PaymentGatewayInterface::class);
+
+        $gateway->method('initializePayment')
+            ->willReturn(new PaymentInitializationDTO(
+                reference: 'PAY-TEST-123',
+                provider: 'monnify',
+                authorizationUrl: 'https://example.test/checkout',
+                providerReference: 'MON-TEST-123',
+            ));
+
+        $this->app->instance(PaymentGatewayInterface::class, $gateway);
+    }
 
     public function test_wallet_checkout_succeeds(): void
     {
@@ -70,12 +89,10 @@ final class CheckoutPurchaseTest extends TestCase
                 'data.status',
                 'pending_payment'
             )
-            ->assertJsonStructure([
-                'success',
-                'data' => [
-                    'checkout_url',
-                ],
-            ]);
+            ->assertJsonPath(
+                'data.checkout_url',
+                'https://example.test/checkout'
+            );
     }
 
     public function test_guest_cannot_checkout(): void

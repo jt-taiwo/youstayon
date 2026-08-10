@@ -8,6 +8,7 @@ use App\Domains\Purchase\Contracts\ExecuteWalletPurchaseServiceInterface;
 use App\Domains\Purchase\Contracts\PurchaseRepositoryInterface;
 use App\Domains\Purchase\Contracts\UtilityProviderInterface;
 use App\Domains\Purchase\Models\Purchase;
+use App\Domains\Subscription\Contracts\AutoRenewSubscriptionServiceInterface;
 use App\Domains\User\Models\User;
 use App\Domains\Wallet\Contracts\DebitWalletServiceInterface;
 use Illuminate\Support\Carbon;
@@ -39,8 +40,7 @@ final readonly class ExecuteWalletPurchaseService
             $payload
         ): Purchase {
 
-            $reference = 'PUR-'
-                . strtoupper(Str::random(12));
+            $reference = 'PUR-' . strtoupper(Str::random(12));
 
             $this->wallets->execute(
                 user: $user,
@@ -64,10 +64,7 @@ final readonly class ExecuteWalletPurchaseService
                 ]
             );
 
-            $provider = $this->providerManager->current();
-
-           $result = $provider->purchase(
-            
+            $result = $this->provider->purchase(
                 serviceType: $serviceType,
                 amount: $amount,
                 payload: $payload
