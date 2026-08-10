@@ -24,6 +24,8 @@ final class Purchase extends Model
         'provider',
         'provider_reference',
         'payment_method',
+        'attribution_source',
+        'attribution_campaign',
         'reference',
         'amount',
         'currency',

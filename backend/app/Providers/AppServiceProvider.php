@@ -7,10 +7,13 @@ namespace App\Providers;
 use App\Domains\Authentication\Contracts\AuthenticationRepositoryInterface;
 use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
+
 use App\Domains\Analytics\Contracts\GetCommerceOverviewServiceInterface;
 use App\Domains\Analytics\Contracts\GetProviderPerformanceServiceInterface;
+use App\Domains\Analytics\Contracts\GetRenewalRadarAnalyticsServiceInterface;
 use App\Domains\Analytics\Services\GetCommerceOverviewService;
 use App\Domains\Analytics\Services\GetProviderPerformanceService;
+use App\Domains\Analytics\Services\GetRenewalRadarAnalyticsService;
 
 use App\Domains\Budget\Contracts\GetPredictiveBudgetServiceInterface;
 use App\Domains\Budget\Services\GetPredictiveBudgetService;
@@ -430,6 +433,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GetProviderPerformanceServiceInterface::class,
             GetProviderPerformanceService::class
+        );
+
+        $this->app->bind(
+            GetRenewalRadarAnalyticsServiceInterface::class,
+            GetRenewalRadarAnalyticsService::class
         );
 
 
