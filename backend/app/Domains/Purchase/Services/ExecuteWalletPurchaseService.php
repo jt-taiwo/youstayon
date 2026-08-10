@@ -64,7 +64,10 @@ final readonly class ExecuteWalletPurchaseService
                 ]
             );
 
-            $result = $this->provider->purchase(
+            $provider = $this->providerManager->current();
+
+           $result = $provider->purchase(
+            
                 serviceType: $serviceType,
                 amount: $amount,
                 payload: $payload

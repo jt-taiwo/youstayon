@@ -79,7 +79,9 @@ use App\Domains\Purchase\Services\CheckoutPurchaseService;
 use App\Domains\Purchase\Services\ExecuteWalletPurchaseService;
 use App\Domains\Purchase\Services\InitializePayNowPurchaseService;
 use App\Domains\Purchase\Services\VerifyPayNowPurchaseService;
-
+use App\Domains\Purchase\Services\ProviderRetryService;
+use App\Domains\Purchase\Services\UtilityProviderHealthService;
+use App\Domains\Purchase\Services\UtilityProviderManager;
 
 use App\Domains\Subscription\Contracts\AutoRenewSubscriptionServiceInterface;
 use App\Domains\Subscription\Contracts\DetectSubscriptionConflictsServiceInterface;
@@ -402,6 +404,17 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AutoRenewSubscriptionServiceInterface::class,
             AutoRenewSubscriptionService::class
+        );
+
+
+        $this->app->singleton(
+            UtilityProviderManager::class
+        );
+        $this->app->singleton(
+            UtilityProviderHealthService::class
+        );
+        $this->app->singleton(
+            ProviderRetryService::class
         );
 
 

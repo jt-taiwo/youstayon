@@ -55,10 +55,13 @@ final readonly class VerifyPayNowPurchaseService
             return false;
         }
 
-        $result = $this->provider->purchase(
-            serviceType: $purchase->service_type,
-            amount: (float) $purchase->amount,
-            payload: $purchase->request_payload
+         $provider = $this->providerManager->current();
+
+         $result = $provider->purchase(
+        
+            serviceType: $serviceType,
+            amount: $amount,
+            payload: $payload
         );
 
         $purchase->provider_reference = $result->providerReference;
