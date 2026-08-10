@@ -9,9 +9,11 @@ use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
 
 use App\Domains\Analytics\Contracts\GetCommerceOverviewServiceInterface;
+use App\Domains\Analytics\Contracts\GetFounderDashboardServiceInterface;
 use App\Domains\Analytics\Contracts\GetProviderPerformanceServiceInterface;
 use App\Domains\Analytics\Contracts\GetRenewalRadarAnalyticsServiceInterface;
 use App\Domains\Analytics\Services\GetCommerceOverviewService;
+use App\Domains\Analytics\Services\GetFounderDashboardService;
 use App\Domains\Analytics\Services\GetProviderPerformanceService;
 use App\Domains\Analytics\Services\GetRenewalRadarAnalyticsService;
 
@@ -438,6 +440,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GetRenewalRadarAnalyticsServiceInterface::class,
             GetRenewalRadarAnalyticsService::class
+        );
+
+        $this->app->bind(
+            GetFounderDashboardServiceInterface::class,
+            GetFounderDashboardService::class
         );
 
 
