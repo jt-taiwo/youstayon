@@ -6,6 +6,10 @@ namespace App\Domains\Analytics\DTOs;
 
 final readonly class FounderDashboardDTO
 {
+    /**
+     * @param ProviderPerformanceDTO[] $providers
+     * @param ServicePerformanceDTO[] $services
+     */
     public function __construct(
         public CommerceOverviewDTO $commerce,
         public PaymentMethodConversionDTO $paymentMethods,

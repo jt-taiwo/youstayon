@@ -10,12 +10,19 @@ use App\Domains\Authentication\Repositories\AuthenticationRepository;
 
 use App\Domains\Analytics\Contracts\GetCommerceOverviewServiceInterface;
 use App\Domains\Analytics\Contracts\GetFounderDashboardServiceInterface;
+use App\Domains\Analytics\Contracts\GetPaymentMethodConversionServiceInterface;
 use App\Domains\Analytics\Contracts\GetProviderPerformanceServiceInterface;
 use App\Domains\Analytics\Contracts\GetRenewalRadarAnalyticsServiceInterface;
+use App\Domains\Analytics\Contracts\GetRevenueTrendServiceInterface;
+use App\Domains\Analytics\Contracts\GetServicePerformanceServiceInterface;
 use App\Domains\Analytics\Services\GetCommerceOverviewService;
 use App\Domains\Analytics\Services\GetFounderDashboardService;
 use App\Domains\Analytics\Services\GetProviderPerformanceService;
 use App\Domains\Analytics\Services\GetRenewalRadarAnalyticsService;
+use App\Domains\Analytics\Services\GetRevenueTrendService;
+use App\Domains\Analytics\Services\GetPaymentMethodConversionService;
+use App\Domains\Analytics\Services\GetServicePerformanceService;
+
 
 use App\Domains\Budget\Contracts\GetPredictiveBudgetServiceInterface;
 use App\Domains\Budget\Services\GetPredictiveBudgetService;
@@ -447,7 +454,20 @@ final class AppServiceProvider extends ServiceProvider
             GetFounderDashboardService::class
         );
 
+        $this->app->bind(
+            GetRevenueTrendServiceInterface::class,
+            GetRevenueTrendService::class
+        );
 
+        $this->app->bind(
+            GetPaymentMethodConversionServiceInterface::class,
+            GetPaymentMethodConversionService::class
+        );
+
+        $this->app->bind(
+            GetServicePerformanceServiceInterface::class,
+            GetServicePerformanceService::class
+        );
 
     }
 

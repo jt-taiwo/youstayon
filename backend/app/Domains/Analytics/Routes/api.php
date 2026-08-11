@@ -6,6 +6,7 @@ use App\Domains\Analytics\Controllers\GetCommerceOverviewController;
 use App\Domains\Analytics\Controllers\GetFounderDashboardController;
 use App\Domains\Analytics\Controllers\GetProviderPerformanceController;
 use App\Domains\Analytics\Controllers\GetRenewalRadarAnalyticsController;
+use App\Domains\Analytics\Controllers\GetDashboardSnapshotController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function (): void {
@@ -27,6 +28,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get(
         '/analytics/founder',
         GetFounderDashboardController::class
+    );
+
+    Route::get(
+        '/analytics/dashboard',
+        GetDashboardSnapshotController::class
     );
 
 });
