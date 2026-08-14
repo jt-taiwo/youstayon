@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+
+import 'core/di/injection.dart';
+import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await configureDependencies();
+
   runApp(const YouStayOnApp());
 }
 
@@ -11,15 +17,11 @@ class YouStayOnApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'YouStayOn',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      home: const Scaffold(
-        body: Center(
-          child: Text('YouStayOn'),
-        ),
-      ),
+      routerConfig: AppRouter.router,
     );
   }
 }
